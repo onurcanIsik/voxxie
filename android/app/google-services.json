@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "555430726038",
+    "project_id": "voxxie-c3927",
+    "storage_bucket": "voxxie-c3927.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555430726038:android:1895dfa10bec7f5c53f5b7",
+        "android_client_info": {
+          "package_name": "com.example.voxxie"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBs2OuL_KdsJkRlVAyPKdiJv6aLLBlWkDw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
