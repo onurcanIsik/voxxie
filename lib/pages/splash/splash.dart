@@ -1,7 +1,7 @@
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:voxxie/colors/colors.dart';
-import 'package:voxxie/pages/auth/register.dart';
+import 'package:voxxie/pages/auth/login.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
@@ -14,7 +14,7 @@ class SplashPage extends StatelessWidget {
       loaderColor: btnColor,
       logoWidth: 100,
       durationInSeconds: 4,
-      navigator: RegisterPage(),
+      navigator: LoginPage(),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voxxie/colors/colors.dart';
+import 'package:voxxie/core/bloc/auth/auth.bloc.dart';
 import 'package:voxxie/core/components/auth/btn_widget.dart';
 import 'package:voxxie/core/components/auth/txt_form.widget.dart';
 import 'package:voxxie/pages/auth/register.dart';
@@ -36,11 +38,17 @@ class LoginPage extends StatelessWidget {
                 topPad: 10,
                 hintTxt: "E-mail",
                 controller: emailController,
+                validatorTxt: (value) {
+                  return null;
+                },
               ),
               TxtFormWidget(
                 topPad: 10,
                 hintTxt: "Password",
                 controller: passwordController,
+                validatorTxt: (value) {
+                  return null;
+                },
               ),
               BtnWidget(
                 topPdng: 30,
@@ -58,7 +66,10 @@ class LoginPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RegisterPage(),
+                          builder: (context) => BlocProvider(
+                            create: (context) => AuthCubit(),
+                            child: RegisterPage(),
+                          ),
                         ),
                       );
                     },
