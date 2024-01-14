@@ -1,4 +1,4 @@
-// ignore_for_file: body_might_complete_normally_nullable
+// ignore_for_file: body_might_complete_normally_nullable, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:voxxie/colors/colors.dart';
@@ -8,13 +8,17 @@ class TxtFormWidget extends StatefulWidget {
   final String hintTxt;
   final TextEditingController controller;
   final String? Function(String?)? validatorTxt;
+  bool isVisible; // Bu değeri burada tutuyoruz
+  bool isObscure;
 
-  const TxtFormWidget({
+  TxtFormWidget({
     super.key,
     required this.topPad,
     required this.hintTxt,
     required this.controller,
     required this.validatorTxt,
+    required this.isVisible,
+    required this.isObscure,
   });
 
   @override
@@ -29,7 +33,18 @@ class _TxtFormWidgetState extends State<TxtFormWidget> {
       child: TextFormField(
         validator: widget.validatorTxt,
         controller: widget.controller,
+        onTap: () {
+          setState(() {
+            widget.isVisible = !widget.isVisible;
+          });
+        },
+        obscureText: widget.isObscure && !widget.isVisible,
         decoration: InputDecoration(
+          suffixIcon: widget.isObscure == true
+              ? widget.isVisible == false
+                  ? const Icon(Icons.remove_red_eye_outlined)
+                  : const Icon(Icons.remove_red_eye)
+              : null,
           hintText: widget.hintTxt,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),

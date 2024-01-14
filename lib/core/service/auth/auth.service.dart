@@ -9,9 +9,42 @@ import 'package:voxxie/core/service/auth/IAuth.service.dart';
 
 class AuthServices implements IAuthService {
   @override
-  Future<Either<String, Unit>> loginUser() {
-    // todo: implement loginUser
-    throw UnimplementedError();
+  Future<Either<String, UserCredential>> loginUser(
+    String email,
+    String password,
+    BuildContext context,
+  ) async {
+    try {
+      final loginUser = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      return right(loginUser);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.warning,
+          text: 'User not found !',
+        );
+        return left('User not found');
+      } else if (e.code == 'wrong-password') {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.warning,
+          text: 'Wrong password provided for that user.',
+        );
+        return left('Wrong password');
+      } else {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          text: 'An unexpected error occurred.',
+        );
+        return left('Unexpected error');
+      }
+    }
   }
 
   @override
@@ -57,10 +90,13 @@ class AuthServices implements IAuthService {
   ) async {
     // todo: implement setUserData
     try {
-      final usersPath = FirebaseFirestore.instance.collection('Users').doc();
+      final userID = FirebaseAuth.instance.currentUser!.uid;
+      final usersPath =
+          FirebaseFirestore.instance.collection('Users').doc(userID);
       final setInfo = await usersPath.set({
         'userMail': email,
         'userName': userName,
+        'userID': userID,
       });
       return right(unit);
     } catch (err) {

@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 abstract class IAuthService {
@@ -7,7 +8,11 @@ abstract class IAuthService {
     String password,
     BuildContext context,
   );
-  Future<Either<String, Unit>> loginUser();
+  Future<Either<String, UserCredential>> loginUser(
+    String email,
+    String password,
+    BuildContext context,
+  );
   Future<Either<String, Unit>> setUserData(
     String email,
     String userName,

@@ -42,6 +42,7 @@ class _BtnWidgetState extends State<BtnWidget> {
           child: Text(
             widget.btnText,
             style: GoogleFonts.fredoka(
+              color: Colors.white,
               fontWeight: FontWeight.w600,
               fontSize: 18,
             ),

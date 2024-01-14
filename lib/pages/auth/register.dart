@@ -5,8 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/bloc/auth/auth.bloc.dart';
+import 'package:voxxie/core/bloc/image/image.bloc.dart';
+import 'package:voxxie/core/bloc/profile/profile.bloc.dart';
 import 'package:voxxie/core/components/auth/btn_widget.dart';
 import 'package:voxxie/core/components/auth/txt_form.widget.dart';
+import 'package:voxxie/pages/auth/image_page.dart';
 import 'package:voxxie/pages/auth/login.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -19,9 +22,21 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ImageCubit(),
+        ),
+      ],
       child: Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: btnColor),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+        ),
         backgroundColor: bgColor,
         body: SafeArea(
           child: SingleChildScrollView(
@@ -31,8 +46,8 @@ class RegisterPage extends StatelessWidget {
                 children: [
                   Center(
                     child: Container(
-                      height: 200,
-                      width: 200,
+                      height: 170,
+                      width: 170,
                       decoration: const BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage('assets/images/voxxie_logo.png'),
@@ -50,6 +65,8 @@ class RegisterPage extends StatelessWidget {
                       }
                       return null;
                     },
+                    isVisible: false,
+                    isObscure: false,
                   ),
                   TxtFormWidget(
                     topPad: 10,
@@ -61,6 +78,8 @@ class RegisterPage extends StatelessWidget {
                       }
                       return null;
                     },
+                    isVisible: true,
+                    isObscure: false,
                   ),
                   TxtFormWidget(
                     topPad: 10,
@@ -72,29 +91,44 @@ class RegisterPage extends StatelessWidget {
                       }
                       return null;
                     },
+                    isVisible: true,
+                    isObscure: true,
                   ),
                   BtnWidget(
                     topPdng: 30,
                     btnHeight: 50,
-                    btnText: "Register",
+                    btnText: "Next",
                     btnWidth: 200,
                     btnFunc: () async {
                       if (formKey.currentState!.validate()) {
-                        context.read<AuthCubit>().userRegister(
+                        await context.read<AuthCubit>().userRegister(
                               emailController.text,
                               passwordController.text,
                               usernameController.text,
                               context,
                             );
-                        context.read<AuthCubit>().setUserInfo(
+                        await context.read<AuthCubit>().setUserInfo(
                               emailController.text,
                               usernameController.text,
                               context,
                             );
 
-                        emailController.clear();
-                        passwordController.clear();
-                        usernameController.clear();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MultiBlocProvider(
+                              providers: [
+                                BlocProvider(
+                                  create: (context) => ImageCubit(),
+                                ),
+                                BlocProvider(
+                                  create: (context) => ProfileCubit(),
+                                ),
+                              ],
+                              child: const SetImagePage(),
+                            ),
+                          ),
+                        );
                       }
                     },
                   ),
@@ -107,7 +141,10 @@ class RegisterPage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LoginPage(),
+                              builder: (context) => BlocProvider(
+                                create: (context) => AuthCubit(),
+                                child: LoginPage(),
+                              ),
                             ),
                           );
                         },
