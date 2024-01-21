@@ -177,6 +177,7 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
                             voxInfo: voxInfo.text,
                             voxImage: image,
                             date: formattedDateTime,
+                            ownerMail: FirebaseAuth.instance.currentUser!.email,
                           ),
                           context,
                         );

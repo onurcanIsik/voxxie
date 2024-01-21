@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/bloc/auth/auth.bloc.dart';
 import 'package:voxxie/core/service/manager/authManager.dart';
@@ -60,6 +61,10 @@ class _SplashPageState extends State<SplashPage> {
       loaderColor: btnColor,
       logoWidth: 100,
       durationInSeconds: 4,
+      loadingText: Text(
+        'Version 1.0.0',
+        style: GoogleFonts.fredoka(),
+      ),
     );
   }
 }

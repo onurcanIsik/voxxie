@@ -48,7 +48,6 @@ class ProfilePage extends StatelessWidget {
                       userPostCount: ivox.length.toString(),
                     );
                   }
-
                   if (state is ProfileErrorState) {
                     return const Center(
                       child: Text('Oopss something went wrong'),

@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/components/auth/btn_widget.dart';
+import 'package:voxxie/pages/home/mail/send_mail.dart';
 
 class VoxDetailPage extends StatefulWidget {
   final String petImage;
   final String petInfo;
   final String petName;
   final String petGen;
+  final String petOwnerMail;
   const VoxDetailPage({
     super.key,
     required this.petImage,
     required this.petInfo,
     required this.petName,
     required this.petGen,
+    required this.petOwnerMail,
   });
 
   @override
@@ -73,7 +76,16 @@ class _VoxDetailPageState extends State<VoxDetailPage> {
             btnHeight: 70,
             btnText: 'Send to mail',
             btnWidth: 300,
-            btnFunc: () {},
+            btnFunc: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SendMailPage(
+                    ownerMail: widget.petOwnerMail,
+                  ),
+                ),
+              );
+            },
           ),
           const Spacer(),
         ],

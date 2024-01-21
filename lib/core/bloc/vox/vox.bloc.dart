@@ -39,6 +39,35 @@ class VoxxieCubit extends Cubit<VoxxieState> {
     }
   }
 
+  updateVox(
+    VoxModel model,
+    BuildContext context,
+  ) async {
+    try {
+      final service = await voxService.updateVox(model);
+
+      if (service.isRight()) {
+        return QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+          text: 'Post updated',
+        );
+      } else {
+        return QuickAlert.show(
+          context: context,
+          type: QuickAlertType.warning,
+          text: 'Something went wrong!',
+        );
+      }
+    } catch (err) {
+      return QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        text: '$err',
+      );
+    }
+  }
+
   getAllVox() async {
     emit(VoxxieLoadingState());
     try {

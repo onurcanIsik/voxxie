@@ -28,8 +28,10 @@ class _EmailVerificationState extends State<EmailVerification> {
   void initState() {
     super.initState();
     FirebaseAuth.instance.currentUser?.sendEmailVerification();
-    timer =
-        Timer.periodic(const Duration(seconds: 5), (_) => checkEmailVerified());
+    timer = Timer.periodic(
+      const Duration(seconds: 10),
+      (_) => checkEmailVerified(),
+    );
   }
 
   checkEmailVerified() async {

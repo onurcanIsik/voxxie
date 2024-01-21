@@ -89,6 +89,17 @@ class _HomePageState extends State<HomePage> {
       );
     } else if (state is VoxxieLoadedState) {
       final voxData = state.allProduct;
+      if (voxData.isEmpty) {
+        return Center(
+          child: SizedBox(
+            height: 100,
+            width: 100,
+            child: Image.asset(
+              'assets/images/emptyPage.png',
+            ),
+          ),
+        );
+      }
       return ListView.builder(
         itemCount: voxData.length,
         itemBuilder: (context, index) {
@@ -104,6 +115,7 @@ class _HomePageState extends State<HomePage> {
                       petInfo: voxData[index].voxInfo.toString(),
                       petGen: voxData[index].voxGen.toString(),
                       petName: voxData[index].voxName.toString(),
+                      petOwnerMail: voxData[index].ownerMail.toString(),
                     ),
                   ),
                 );

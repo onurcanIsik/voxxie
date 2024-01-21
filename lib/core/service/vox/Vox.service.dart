@@ -23,9 +23,11 @@ class VoxService implements IVoxService {
         'voxGen': model.voxGen,
         'voxInfo': model.voxInfo,
         'voxLoc': model.voxLoc,
-        'voxID': userID,
+        'voxID': randID,
+        'userID': userID,
         'voxImage': model.voxImage,
         'voxDate': model.date,
+        'ownerMail': FirebaseAuth.instance.currentUser!.email,
       });
       return right(unit);
     } catch (err) {
@@ -46,6 +48,27 @@ class VoxService implements IVoxService {
       final allData = voxxie.docs.map((doc) => doc.data()).toList();
       return right(allData);
     } catch (handle) {
+      return left(throw UnimplementedError());
+    }
+  }
+
+  @override
+  Future<Either<String, Unit>> updateVox(VoxModel model) async {
+    // todo: implement updateVox
+    try {
+      final voxPath = FirebaseFirestore.instance.collection("Voxx");
+      final setVox = await voxPath.doc(model.voxID).update({
+        'voxName': model.voxName,
+        'voxAge': model.voxAge,
+        'voxColor': model.voxColor,
+        'voxGen': model.voxGen,
+        'voxInfo': model.voxInfo,
+        'voxLoc': model.voxLoc,
+        'voxImage': model.voxImage,
+        'voxDate': model.date,
+      });
+      return right(unit);
+    } catch (err) {
       return left(throw UnimplementedError());
     }
   }

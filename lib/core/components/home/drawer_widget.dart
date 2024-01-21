@@ -71,26 +71,6 @@ Widget drawerWidget(BuildContext context) {
           ),
         ),
         Card(
-          color: btnColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: GestureDetector(
-            onTap: () {},
-            child: ListTile(
-              title: Center(
-                child: Text(
-                  'Search Vox',
-                  style: GoogleFonts.fredoka(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Card(
           color: Colors.redAccent,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),

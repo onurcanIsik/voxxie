@@ -12,7 +12,7 @@ class MyVoxService implements MyIVoxService {
     try {
       final myVox = FirebaseFirestore.instance
           .collection('Voxx')
-          .where('voxID', isEqualTo: userID);
+          .where('userID', isEqualTo: userID);
       QuerySnapshot voxxie = await myVox.get();
       final allData = voxxie.docs.map((doc) => doc.data()).toList();
       return right(allData);

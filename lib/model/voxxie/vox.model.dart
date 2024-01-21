@@ -7,6 +7,9 @@ class VoxModel {
   String? voxInfo;
   String? voxImage;
   String? date;
+  String? voxID;
+  String? userID;
+  String? ownerMail;
 
   VoxModel({
     required this.voxName,
@@ -17,6 +20,9 @@ class VoxModel {
     required this.voxInfo,
     required this.voxImage,
     required this.date,
+    this.voxID,
+    this.userID,
+    this.ownerMail,
   });
 
   factory VoxModel.fromMap(Map<String, dynamic> map) {
@@ -29,6 +35,9 @@ class VoxModel {
       voxInfo: map['voxInfo'] ?? '',
       voxImage: map['voxImage'] ?? '',
       date: map['voxDate'] ?? '',
+      voxID: map['voxID'] ?? '',
+      userID: map['userID'] ?? '',
+      ownerMail: map['ownerMail'] ?? '',
     );
   }
 }

@@ -247,7 +247,7 @@ class SettingsPage extends StatelessWidget {
   Future<void> deleteUserAccount(BuildContext context) async {
     try {
       await FirebaseAuth.instance.currentUser!.delete();
-
+      await AuthManager().setLoggedIn(false);
       return QuickAlert.show(context: context, type: QuickAlertType.success);
     } on FirebaseAuthException catch (e) {
       if (e.code == "requires-recent-login") {
@@ -256,7 +256,7 @@ class SettingsPage extends StatelessWidget {
         return QuickAlert.show(type: QuickAlertType.warning, context: context);
       }
     } catch (e) {
-      return QuickAlert.show(type: QuickAlertType.warning, context: context);
+      return QuickAlert.show(type: QuickAlertType.error, context: context);
     }
   }
 
