@@ -47,7 +47,11 @@ class SettingsCubit extends Cubit<SettingsState> {
         );
       }
     } catch (e) {
-      return QuickAlert.show(context: context, type: QuickAlertType.error);
+      return QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        text: 'Someting went wrong please try again later',
+      );
     }
   }
 }

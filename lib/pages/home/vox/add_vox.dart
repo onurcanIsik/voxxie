@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:voxxie/colors/colors.dart';
+import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/bloc/vox/vox.bloc.dart';
 import 'package:voxxie/core/components/auth/btn_widget.dart';
 import 'package:voxxie/core/components/auth/txt_form.widget.dart';
@@ -36,8 +37,8 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return Scaffold(
-      backgroundColor: bgColor,
       appBar: _appBar(),
       body: SingleChildScrollView(
         child: Form(
@@ -51,7 +52,9 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
                     height: 200,
                     width: 200,
                     decoration: BoxDecoration(
-                      border: Border.all(),
+                      border: Border.all(
+                        color: isDarkTheme ? Colors.white : Colors.black,
+                      ),
                       borderRadius: BorderRadius.circular(20),
                       image: image!.isEmpty
                           ? null
@@ -158,7 +161,7 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
                 isObscure: false,
               ),
               BtnWidget(
-                topPdng: 30,
+                topPdng: 20,
                 btnHeight: 50,
                 btnText: "Post",
                 btnWidth: 150,
@@ -194,7 +197,7 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
                   }
                 },
               ),
-              const SizedBox(height: 40)
+              const SizedBox(height: 250)
             ],
           ),
         ),
@@ -204,6 +207,7 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
 
   AppBar _appBar() {
     return AppBar(
+      centerTitle: true,
       iconTheme: const IconThemeData(color: Colors.white),
       backgroundColor: btnColor,
       title: Text(

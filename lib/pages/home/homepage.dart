@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,12 +8,11 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/bloc/auth/auth.bloc.dart';
 import 'package:voxxie/core/bloc/profile/profile.bloc.dart';
+import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/bloc/vox/vox.bloc.dart';
-import 'package:voxxie/core/components/home/drawer_widget.dart';
 import 'package:voxxie/core/components/home/voxCard.widget.dart';
 import 'package:voxxie/core/service/manager/authManager.dart';
 import 'package:voxxie/pages/auth/login.dart';
-import 'package:voxxie/pages/home/profile/profile.dart';
 import 'package:voxxie/pages/home/vox/vox_detail.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,6 +24,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late bool isInternetConnected;
+  final uuid = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   void initState() {
@@ -51,11 +52,17 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => VoxxieCubit()..getAllVox(),
+    final uuid = FirebaseAuth.instance.currentUser!.uid;
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => VoxxieCubit()..getAllVox(),
+        ),
+        BlocProvider(
+          create: (context) => ProfileCubit()..getUserInfo(uuid),
+        )
+      ],
       child: Scaffold(
-        backgroundColor: bgColor,
-        drawer: drawerWidget(context),
         appBar: _appBar(context),
         body: BlocBuilder<VoxxieCubit, VoxxieState>(
           builder: (context, state) {
@@ -83,6 +90,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildVoxList(BuildContext context, VoxxieState state) {
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     if (state is VoxxieLoadingState) {
       return const Center(
         child: CircularProgressIndicator(),
@@ -125,8 +133,10 @@ class _HomePageState extends State<HomePage> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.white,
-                  border: Border.all(),
+                  color: isDarkTheme ? bgColor : Colors.white,
+                  border: Border.all(
+                    color: isDarkTheme ? Colors.white : Colors.black,
+                  ),
                 ),
                 child: Row(
                   children: [
@@ -244,22 +254,6 @@ class _HomePageState extends State<HomePage> {
         height: 100,
         child: Image.asset('assets/images/voxxie_logo.png'),
       ),
-      actions: [
-        IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BlocProvider(
-                  create: (context) => ProfileCubit(),
-                  child: const ProfilePage(),
-                ),
-              ),
-            );
-          },
-          icon: const Icon(Icons.person_2),
-        ),
-      ],
     );
   }
 }

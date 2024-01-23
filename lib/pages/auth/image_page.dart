@@ -27,7 +27,6 @@ class SetImagePage extends StatelessWidget {
         ),
       ],
       child: Scaffold(
-        backgroundColor: bgColor,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,

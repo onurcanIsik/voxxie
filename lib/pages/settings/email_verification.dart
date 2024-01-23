@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/bloc/auth/auth.bloc.dart';
+import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/service/manager/authManager.dart';
 import 'package:voxxie/pages/auth/login.dart';
 
@@ -71,9 +72,9 @@ class _EmailVerificationState extends State<EmailVerification> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: bgColor,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -86,6 +87,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                   'Check your \n Email',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.roboto(
+                    color: isDarkTheme ? Colors.white : txtColor,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -98,6 +100,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                     'We have sent you a Email on  $authEmail',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.roboto(
+                      color: isDarkTheme ? Colors.white : txtColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -113,6 +116,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                     'Verifying email....',
                     textAlign: TextAlign.center,
                     style: GoogleFonts.fredoka(
+                      color: isDarkTheme ? Colors.white : txtColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

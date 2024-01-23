@@ -1,12 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voxxie/colors/colors.dart';
+import 'package:voxxie/core/bloc/image/image.bloc.dart';
 import 'package:voxxie/core/bloc/ivox/ivox.bloc.dart';
-import 'package:voxxie/core/bloc/profile/profile.bloc.dart';
 import 'package:voxxie/core/bloc/settings/set.bloc.dart';
+import 'package:voxxie/core/bloc/shared/set_user.bloc.dart';
 import 'package:voxxie/core/components/profile/user_info.widget.dart';
+import 'package:voxxie/core/shared/enums/shared_keys.dart';
+import 'package:voxxie/core/shared/shared_manager.dart';
 import 'package:voxxie/pages/settings/settings.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -14,49 +16,25 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userID = FirebaseAuth.instance.currentUser!.uid;
+    final String? userName = SharedManager.getString(SharedKeys.userName);
+    final String? userImage = SharedManager.getString(SharedKeys.userImage);
+
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => ProfileCubit()..getUserInfo(userID),
-        ),
         BlocProvider(
           create: (context) => IVoxxieCubit()..getAllMyVoxxie(),
         ),
       ],
       child: Scaffold(
-        backgroundColor: bgColor,
         appBar: _appBar(context),
         body: BlocBuilder<IVoxxieCubit, IVoxxieState>(
           builder: (context, state) {
             if (state is IVoxxieLoadedState) {
               final ivox = state.ivox;
-
-              return BlocBuilder<ProfileCubit, ProfileState>(
-                builder: (context, state) {
-                  if (state is ProfileLoadingState) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (state is ProfileLoadedState) {
-                    final userData = state.datas;
-                    return UserInfoWidget(
-                      userName: userData[0].userName.toString(),
-                      userFollowers: "2312",
-                      userImage: userData[0].userImage,
-                      userPostCount: ivox.length.toString(),
-                    );
-                  }
-                  if (state is ProfileErrorState) {
-                    return const Center(
-                      child: Text('Oopss something went wrong'),
-                    );
-                  }
-                  return const Center(
-                    child: Text('Try again later!'),
-                  );
-                },
+              return UserInfoWidget(
+                userName: userName!,
+                userImage: userImage,
+                userPostCount: ivox.length.toString(),
               );
             }
             return Image.asset('assets/images/voxxie_logo.png');
@@ -68,6 +46,7 @@ class ProfilePage extends StatelessWidget {
 
   AppBar _appBar(BuildContext context) {
     return AppBar(
+      centerTitle: true,
       iconTheme: const IconThemeData(color: Colors.white),
       backgroundColor: btnColor,
       title: Text(
@@ -84,9 +63,19 @@ class ProfilePage extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BlocProvider(
-                  create: (context) => SettingsCubit(),
-                  child: SettingsPage(),
+                builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => SettingsCubit(),
+                    ),
+                    BlocProvider(
+                      create: (context) => ImageCubit(),
+                    ),
+                    BlocProvider(
+                      create: (context) => SharedUserCubit(),
+                    ),
+                  ],
+                  child: const SettingsPage(),
                 ),
               ),
             );

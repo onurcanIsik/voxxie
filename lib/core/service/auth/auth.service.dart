@@ -8,6 +8,7 @@ import 'package:quickalert/quickalert.dart';
 import 'package:voxxie/core/service/auth/IAuth.service.dart';
 
 class AuthServices implements IAuthService {
+  var instance = FirebaseFirestore.instance;
   @override
   Future<Either<String, UserCredential>> loginUser(
     String email,
@@ -52,16 +53,31 @@ class AuthServices implements IAuthService {
     String email,
     String password,
     BuildContext context,
+    String userName,
   ) async {
     // todo: implement registerUser
     try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      final checkUser = await instance
+          .collection("Users")
+          .where('userName', isEqualTo: userName)
+          .get();
 
-      return right(unit);
+      if (checkUser.docs.isEmpty) {
+        final credential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        await setUserData(email, userName, context);
+        return right(unit);
+      } else {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.warning,
+          text: 'This username already in use!',
+        );
+        return left('This username already in use!');
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         QuickAlert.show(

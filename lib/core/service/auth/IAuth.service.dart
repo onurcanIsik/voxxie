@@ -7,6 +7,7 @@ abstract class IAuthService {
     String email,
     String password,
     BuildContext context,
+    String username,
   );
   Future<Either<String, UserCredential>> loginUser(
     String email,

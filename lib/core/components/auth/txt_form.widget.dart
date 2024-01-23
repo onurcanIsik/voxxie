@@ -31,6 +31,7 @@ class _TxtFormWidgetState extends State<TxtFormWidget> {
     return Padding(
       padding: EdgeInsets.only(left: 30, right: 30, top: widget.topPad),
       child: TextFormField(
+        style: TextStyle(color: txtColor),
         validator: widget.validatorTxt,
         controller: widget.controller,
         onTap: () {

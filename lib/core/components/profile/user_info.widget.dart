@@ -4,22 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voxxie/colors/colors.dart';
+import 'package:voxxie/core/bloc/image/image.bloc.dart';
 import 'package:voxxie/core/bloc/ivox/ivox.bloc.dart';
 import 'package:voxxie/core/bloc/profile/profile.bloc.dart';
 import 'package:voxxie/core/bloc/vox/vox.bloc.dart';
-import 'package:voxxie/pages/home/homepage.dart';
+import 'package:voxxie/main.dart';
+import 'package:voxxie/pages/home/nav/navbar.dart';
 import 'package:voxxie/pages/home/vox/update/update_vox.dart';
 
 class UserInfoWidget extends StatefulWidget {
   final String userName;
-  final String userFollowers;
   final String? userImage;
   final String? userPostCount;
 
   const UserInfoWidget({
     super.key,
     required this.userName,
-    required this.userFollowers,
     required this.userImage,
     required this.userPostCount,
   });
@@ -39,7 +39,7 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 20, top: 30),
-                child: widget.userImage != null
+                child: widget.userImage!.isNotEmpty
                     ? Container(
                         height: 120,
                         width: 120,
@@ -79,6 +79,25 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(14),
                             bottomLeft: Radius.circular(14),
+                          ),
+                        ),
+                        child: Center(
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.photo,
+                              color: bgColor,
+                            ),
+                            onPressed: () async {
+                              await context
+                                  .read<ImageCubit>()
+                                  .setUserImage(context);
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (context) => const MyApp(),
+                                ),
+                                (route) => false,
+                              );
+                            },
                           ),
                         ),
                       ),
@@ -289,11 +308,11 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
                         ),
                         onPressed: () async {
                           await deleteFunc();
-                          Navigator.push(
-                            context,
+                          Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                              builder: (context) => const HomePage(),
+                              builder: (context) => const NavbarPage(),
                             ),
+                            (route) => false,
                           );
                         },
                         child: Text(

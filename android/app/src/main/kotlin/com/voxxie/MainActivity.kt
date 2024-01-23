@@ -1,4 +1,4 @@
-package com.example.voxxie
+package com.voxxie
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -5,7 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:voxxie/core/service/auth/auth.service.dart';
 import 'package:voxxie/core/service/manager/authManager.dart';
-import 'package:voxxie/pages/home/homepage.dart';
+import 'package:voxxie/pages/auth/login.dart';
+import 'package:voxxie/pages/home/nav/navbar.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthServices _authServices = AuthServices();
@@ -27,17 +28,19 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
       if (service.isRight()) {
-        return Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomePage(),
-          ),
-        ).then(
-          (value) => QuickAlert.show(
-            context: context,
-            type: QuickAlertType.success,
-          ),
-        );
+        return Navigator.of(context)
+            .pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const NavbarPage(),
+              ),
+              (route) => false,
+            )
+            .then(
+              (value) => QuickAlert.show(
+                context: context,
+                type: QuickAlertType.success,
+              ),
+            );
       }
     } catch (err) {
       emit(LoginFailureState("Success fail !"));
@@ -83,17 +86,29 @@ class AuthCubit extends Cubit<AuthState> {
         email,
         password,
         context,
+        userName,
       );
       if (service!.isRight()) {
         return QuickAlert.show(
           context: context,
           type: QuickAlertType.success,
-        );
+        ).then((value) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BlocProvider(
+                create: (context) => AuthCubit(),
+                child: LoginPage(),
+              ),
+            ),
+          );
+        });
       }
     } catch (err) {
       return QuickAlert.show(
         context: context,
         type: QuickAlertType.error,
+        text: 'Something went wrong',
       );
     }
   }

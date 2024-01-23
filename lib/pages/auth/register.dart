@@ -6,10 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/bloc/auth/auth.bloc.dart';
 import 'package:voxxie/core/bloc/image/image.bloc.dart';
-import 'package:voxxie/core/bloc/profile/profile.bloc.dart';
+import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/components/auth/btn_widget.dart';
 import 'package:voxxie/core/components/auth/txt_form.widget.dart';
-import 'package:voxxie/pages/auth/image_page.dart';
 import 'package:voxxie/pages/auth/login.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -22,6 +21,7 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -37,7 +37,6 @@ class RegisterPage extends StatelessWidget {
           elevation: 0,
           backgroundColor: Colors.transparent,
         ),
-        backgroundColor: bgColor,
         body: SafeArea(
           child: SingleChildScrollView(
             child: Form(
@@ -97,7 +96,7 @@ class RegisterPage extends StatelessWidget {
                   BtnWidget(
                     topPdng: 30,
                     btnHeight: 50,
-                    btnText: "Next",
+                    btnText: "Register",
                     btnWidth: 200,
                     btnFunc: () async {
                       if (formKey.currentState!.validate()) {
@@ -107,28 +106,6 @@ class RegisterPage extends StatelessWidget {
                               usernameController.text,
                               context,
                             );
-                        await context.read<AuthCubit>().setUserInfo(
-                              emailController.text,
-                              usernameController.text,
-                              context,
-                            );
-
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MultiBlocProvider(
-                              providers: [
-                                BlocProvider(
-                                  create: (context) => ImageCubit(),
-                                ),
-                                BlocProvider(
-                                  create: (context) => ProfileCubit(),
-                                ),
-                              ],
-                              child: const SetImagePage(),
-                            ),
-                          ),
-                        );
                       }
                     },
                   ),
@@ -151,17 +128,20 @@ class RegisterPage extends StatelessWidget {
                         child: RichText(
                           text: TextSpan(
                             style: GoogleFonts.fredoka(
-                              color: txtColor,
+                              color: isDarkTheme ? Colors.white : txtColor,
                             ),
                             children: [
                               TextSpan(
                                 text: "You have already",
-                                style: GoogleFonts.fredoka(),
+                                style: GoogleFonts.fredoka(
+                                  color: isDarkTheme ? Colors.white : txtColor,
+                                ),
                               ),
                               TextSpan(
                                 text: " account ?",
                                 style: GoogleFonts.fredoka(
                                   fontWeight: FontWeight.w800,
+                                  color: isDarkTheme ? Colors.white : txtColor,
                                 ),
                               ),
                             ],

@@ -39,7 +39,6 @@ class _UpdateVoxPageState extends State<UpdateVoxPage> {
     return BlocProvider(
       create: (context) => VoxxieCubit(),
       child: Scaffold(
-        backgroundColor: bgColor,
         appBar: _appBar(),
         body: SingleChildScrollView(
           child: Form(

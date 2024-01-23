@@ -1,5 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, no_leading_underscores_for_local_identifiers
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,22 +8,37 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/bloc/auth/auth.bloc.dart';
+import 'package:voxxie/core/bloc/image/image.bloc.dart';
 import 'package:voxxie/core/bloc/settings/set.bloc.dart';
+import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/components/auth/txt_form.widget.dart';
 import 'package:voxxie/core/service/manager/authManager.dart';
+import 'package:voxxie/core/shared/enums/shared_keys.dart';
+import 'package:voxxie/core/shared/shared_manager.dart';
+import 'package:voxxie/main.dart';
 import 'package:voxxie/pages/auth/login.dart';
 import 'package:voxxie/pages/settings/email_verification.dart';
 
-class SettingsPage extends StatelessWidget {
-  SettingsPage({super.key});
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
 
-  final TextEditingController controller = TextEditingController();
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  final TextEditingController controllerEmail = TextEditingController();
+  final TextEditingController controllerName = TextEditingController();
+  String? img = '';
+
+  bool isDarkTheme = false;
 
   @override
   Widget build(BuildContext context) {
     final AuthManager authManager = AuthManager();
+    final bool isDarkThemeC = context.watch<ThemeCubit>().state.isDarkTheme!;
+
     return Scaffold(
-      backgroundColor: bgColor,
       appBar: _appBar(),
       body: Column(
         children: [
@@ -72,17 +88,18 @@ class SettingsPage extends StatelessWidget {
                   Icons.email,
                   color: Colors.white,
                 ),
-                onPressed: () {
+                onPressed: () async {
+                  AuthManager().setVerifiedIn(false);
                   _showBottomSheet(
                     context,
-                    controller,
+                    controllerEmail,
                     'Email',
-                    () {
-                      context.read<SettingsCubit>().updateMail(
-                            controller.text,
+                    () async {
+                      await context.read<SettingsCubit>().updateMail(
+                            controllerEmail.text,
                             context,
                           );
-                      controller.clear();
+                      controllerEmail.clear();
                     },
                   );
                 },
@@ -107,15 +124,21 @@ class SettingsPage extends StatelessWidget {
                 onPressed: () {
                   _showBottomSheet(
                     context,
-                    controller,
+                    controllerName,
                     'Username',
-                    () {
-                      context.read<SettingsCubit>().updateName(
-                            controller.text,
+                    () async {
+                      await context.read<SettingsCubit>().updateName(
+                            controllerName.text,
                             context,
                           );
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => const MyApp(),
+                        ),
+                        (route) => false,
+                      );
 
-                      controller.clear();
+                      controllerName.clear();
                     },
                   );
                 },
@@ -123,12 +146,86 @@ class SettingsPage extends StatelessWidget {
             ),
           ),
           Card(
-            color: txtColor,
+            color: btnColor,
+            child: ListTile(
+              title: Text(
+                'Change Profile Photo',
+                style: GoogleFonts.fredoka(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+              trailing: IconButton(
+                icon: const Icon(
+                  Icons.photo,
+                  color: Colors.white,
+                ),
+                onPressed: () async {
+                  await context.read<ImageCubit>().setUserImage(context);
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const MyApp(),
+                    ),
+                    (route) => false,
+                  );
+                },
+              ),
+            ),
+          ),
+          Card(
+            color: btnColor,
+            child: ListTile(
+              title: Text(
+                'Dark mode',
+                style: GoogleFonts.fredoka(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+              trailing: Switch(
+                value: SharedManager.getBool(SharedKeys.isDarkMode)!,
+                onChanged: (value) {
+                  setState(() {
+                    isDarkTheme = !isDarkTheme;
+                  });
+                  if (value) {
+                    context.read<ThemeCubit>().setDarkTheme();
+                  } else {
+                    context.read<ThemeCubit>().setLightTheme();
+                  }
+                },
+              ),
+            ),
+          ),
+          Card(
+            color: Colors.redAccent,
+            child: ListTile(
+              title: Text(
+                'Log out',
+                style: GoogleFonts.fredoka(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+              trailing: IconButton(
+                icon: const Icon(
+                  Icons.exit_to_app,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  logout(context);
+                  AuthManager().setLoggedIn(false);
+                },
+              ),
+            ),
+          ),
+          Card(
+            color: isDarkThemeC ? bgColor : txtColor,
             child: ListTile(
               title: Text(
                 'Delete Account',
                 style: GoogleFonts.fredoka(
-                  color: Colors.white,
+                  color: isDarkThemeC ? txtColor : bgColor,
                   fontSize: 18,
                 ),
               ),
@@ -173,6 +270,7 @@ class SettingsPage extends StatelessWidget {
 
   AppBar _appBar() {
     return AppBar(
+      centerTitle: true,
       iconTheme: const IconThemeData(color: Colors.white),
       backgroundColor: btnColor,
       title: Text(
@@ -196,13 +294,13 @@ class SettingsPage extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          height: 700,
+          height: 1200,
           width: double.infinity,
           color: Colors.white,
           child: Column(
             children: [
               TxtFormWidget(
-                topPad: 100,
+                topPad: 30,
                 hintTxt: "Change $value",
                 controller: controller,
                 validatorTxt: (value) {
@@ -245,7 +343,10 @@ class SettingsPage extends StatelessWidget {
   }
 
   Future<void> deleteUserAccount(BuildContext context) async {
+    final userID = FirebaseAuth.instance.currentUser!.uid;
+
     try {
+      await FirebaseFirestore.instance.collection('Users').doc(userID).delete();
       await FirebaseAuth.instance.currentUser!.delete();
       await AuthManager().setLoggedIn(false);
       return QuickAlert.show(context: context, type: QuickAlertType.success);
@@ -277,5 +378,19 @@ class SettingsPage extends StatelessWidget {
     } catch (e) {
       return QuickAlert.show(type: QuickAlertType.warning, context: context);
     }
+  }
+
+  Future logout(BuildContext context) async {
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    await _firebaseAuth.signOut().then(
+          (value) => Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => BlocProvider(
+                  create: (context) => AuthCubit(),
+                  child: LoginPage(),
+                ),
+              ),
+              (route) => false),
+        );
   }
 }

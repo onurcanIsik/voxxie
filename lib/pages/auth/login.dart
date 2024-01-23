@@ -7,6 +7,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/bloc/auth/auth.bloc.dart';
 import 'package:voxxie/core/bloc/image/image.bloc.dart';
+import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/components/auth/btn_widget.dart';
 import 'package:voxxie/core/components/auth/txt_form.widget.dart';
 import 'package:voxxie/core/service/manager/authManager.dart';
@@ -23,10 +24,10 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return BlocProvider(
       create: (context) => AuthCubit(),
       child: Scaffold(
-        backgroundColor: bgColor,
         body: SafeArea(
           child: SingleChildScrollView(
             child: Form(
@@ -120,12 +121,15 @@ class LoginPage extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: "You don't have a",
-                                style: GoogleFonts.fredoka(),
+                                style: GoogleFonts.fredoka(
+                                  color: isDarkTheme ? Colors.white : txtColor,
+                                ),
                               ),
                               TextSpan(
                                 text: " account ?",
                                 style: GoogleFonts.fredoka(
                                   fontWeight: FontWeight.w800,
+                                  color: isDarkTheme ? Colors.white : txtColor,
                                 ),
                               ),
                             ],

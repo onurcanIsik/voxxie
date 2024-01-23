@@ -8,9 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/bloc/auth/auth.bloc.dart';
+import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/service/manager/authManager.dart';
 import 'package:voxxie/pages/auth/login.dart';
-import 'package:voxxie/pages/home/homepage.dart';
+import 'package:voxxie/pages/home/nav/navbar.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key});
@@ -47,7 +48,7 @@ class _SplashPageState extends State<SplashPage> {
 
   Widget _checkUserLoginStatus() {
     if (AuthManager().isLoggedIn == true) {
-      return const HomePage();
+      return const NavbarPage();
     } else {
       return LoginPage();
     }
@@ -55,15 +56,18 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return EasySplashScreen(
-      backgroundColor: bgColor,
+      backgroundColor: isDarkTheme ? txtColor : bgColor,
       logo: Image.asset('assets/images/voxxie_logo.png'),
       loaderColor: btnColor,
       logoWidth: 100,
       durationInSeconds: 4,
       loadingText: Text(
         'Version 1.0.0',
-        style: GoogleFonts.fredoka(),
+        style: GoogleFonts.fredoka(
+          color: isDarkTheme ? Colors.white : Colors.black,
+        ),
       ),
     );
   }
