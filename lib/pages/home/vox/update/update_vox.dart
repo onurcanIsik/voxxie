@@ -8,6 +8,8 @@ import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/bloc/vox/vox.bloc.dart';
 import 'package:voxxie/core/components/auth/btn_widget.dart';
 import 'package:voxxie/core/components/auth/txt_form.widget.dart';
+import 'package:voxxie/core/util/extension/string.extension.dart';
+import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 import 'package:voxxie/model/voxxie/vox.model.dart';
 
 class UpdateVoxPage extends StatefulWidget {
@@ -47,7 +49,7 @@ class _UpdateVoxPageState extends State<UpdateVoxPage> {
               children: [
                 TxtFormWidget(
                   topPad: 30,
-                  hintTxt: "Name",
+                  hintTxt: LocaleKeys.add_vox_page_pet_name_text.locale,
                   controller: voxName,
                   validatorTxt: (value) {
                     if (value!.isEmpty) {
@@ -60,7 +62,7 @@ class _UpdateVoxPageState extends State<UpdateVoxPage> {
                 ),
                 TxtFormWidget(
                   topPad: 10,
-                  hintTxt: "Genus",
+                  hintTxt: LocaleKeys.add_vox_page_pet_genus_text.locale,
                   controller: voxGenus,
                   validatorTxt: (value) {
                     if (value!.isEmpty) {
@@ -73,7 +75,7 @@ class _UpdateVoxPageState extends State<UpdateVoxPage> {
                 ),
                 TxtFormWidget(
                   topPad: 10,
-                  hintTxt: "Age",
+                  hintTxt: LocaleKeys.add_vox_page_pet_age_text.locale,
                   controller: voxAge,
                   validatorTxt: (value) {
                     if (value!.isEmpty) {
@@ -86,7 +88,7 @@ class _UpdateVoxPageState extends State<UpdateVoxPage> {
                 ),
                 TxtFormWidget(
                   topPad: 10,
-                  hintTxt: "Color",
+                  hintTxt: LocaleKeys.add_vox_page_pet_color_text.locale,
                   controller: voxColor,
                   validatorTxt: (value) {
                     if (value!.isEmpty) {
@@ -99,7 +101,7 @@ class _UpdateVoxPageState extends State<UpdateVoxPage> {
                 ),
                 TxtFormWidget(
                   topPad: 10,
-                  hintTxt: "Location",
+                  hintTxt: LocaleKeys.add_vox_page_add_location_text.locale,
                   controller: voxLoc,
                   validatorTxt: (value) {
                     if (value!.isEmpty) {
@@ -112,7 +114,7 @@ class _UpdateVoxPageState extends State<UpdateVoxPage> {
                 ),
                 TxtFormWidget(
                   topPad: 10,
-                  hintTxt: "information about",
+                  hintTxt: LocaleKeys.add_vox_page_add_information_text.locale,
                   controller: voxInfo,
                   validatorTxt: (value) {
                     if (value!.isEmpty) {
@@ -126,7 +128,7 @@ class _UpdateVoxPageState extends State<UpdateVoxPage> {
                 BtnWidget(
                   topPdng: 30,
                   btnHeight: 50,
-                  btnText: "Update",
+                  btnText: LocaleKeys.profile_page_profile_update_text.locale,
                   btnWidth: 150,
                   btnFunc: () async {
                     DateTime now = DateTime.now();

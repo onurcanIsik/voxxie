@@ -12,12 +12,17 @@ import 'package:voxxie/core/bloc/image/image.bloc.dart';
 import 'package:voxxie/core/bloc/settings/set.bloc.dart';
 import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/components/auth/txt_form.widget.dart';
+import 'package:voxxie/core/components/settings/settings_Card_widget.dart';
+import 'package:voxxie/core/extensions/context.extension.dart';
 import 'package:voxxie/core/service/manager/authManager.dart';
-import 'package:voxxie/core/shared/enums/shared_keys.dart';
+import 'package:voxxie/core/util/enums/shared_keys.dart';
 import 'package:voxxie/core/shared/shared_manager.dart';
+import 'package:voxxie/core/util/extension/string.extension.dart';
+import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 import 'package:voxxie/main.dart';
 import 'package:voxxie/pages/auth/login.dart';
 import 'package:voxxie/pages/settings/email_verification.dart';
+import 'package:voxxie/pages/settings/password.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -29,6 +34,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   final TextEditingController controllerEmail = TextEditingController();
   final TextEditingController controllerName = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   String? img = '';
 
   bool isDarkTheme = false;
@@ -40,93 +46,60 @@ class _SettingsPageState extends State<SettingsPage> {
 
     return Scaffold(
       appBar: _appBar(),
-      body: Column(
-        children: [
-          Card(
-            color: btnColor,
-            child: ListTile(
-              title: Text(
-                'Email verification',
-                style: GoogleFonts.fredoka(
-                  color: Colors.white,
-                  fontSize: 18,
+      body: Form(
+        key: formKey,
+        child: Column(
+          children: [
+            Card(
+              color: btnColor,
+              child: ListTile(
+                title: Text(
+                  LocaleKeys
+                      .settings_page_settings_email_verification_text.locale,
+                  style: GoogleFonts.fredoka(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
                 ),
-              ),
-              trailing: authManager.isVerified == false
-                  ? IconButton(
-                      icon: const Icon(
-                        Icons.mark_email_read,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const EmailVerification(),
-                          ),
-                        );
-                      },
-                    )
-                  : const Icon(
-                      Icons.verified_user,
-                      color: Colors.greenAccent,
-                    ),
-            ),
-          ),
-          Card(
-            color: btnColor,
-            child: ListTile(
-              title: Text(
-                'Change Email',
-                style: GoogleFonts.fredoka(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
-              trailing: IconButton(
-                icon: const Icon(
-                  Icons.email,
-                  color: Colors.white,
-                ),
-                onPressed: () async {
-                  AuthManager().setVerifiedIn(false);
-                  _showBottomSheet(
-                    context,
-                    controllerEmail,
-                    'Email',
-                    () async {
-                      await context.read<SettingsCubit>().updateMail(
-                            controllerEmail.text,
+                trailing: authManager.isVerified == false
+                    ? IconButton(
+                        icon: const Icon(
+                          Icons.mark_email_read,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.push(
                             context,
+                            MaterialPageRoute(
+                              builder: (context) => const EmailVerification(),
+                            ),
                           );
-                      controllerEmail.clear();
-                    },
-                  );
-                },
+                        },
+                      )
+                    : const Icon(
+                        Icons.verified_user,
+                        color: Colors.greenAccent,
+                      ),
               ),
             ),
-          ),
-          Card(
-            color: btnColor,
-            child: ListTile(
-              title: Text(
-                'Change Username',
-                style: GoogleFonts.fredoka(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
-              trailing: IconButton(
-                icon: const Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  _showBottomSheet(
-                    context,
-                    controllerName,
-                    'Username',
-                    () async {
+            SettingsCardWidget(
+              txt:
+                  LocaleKeys.settings_page_settings_username_change_text.locale,
+              icon: Icons.person,
+              func: () async {
+                _showBottomSheet(
+                  context,
+                  controllerName,
+                  'Username',
+                  () async {
+                    if (controllerName.text.isEmpty) {
+                      return QuickAlert.show(
+                        context: context,
+                        type: QuickAlertType.warning,
+                        text: LocaleKeys
+                            .handle_texts_username_cannot_empty_text.locale,
+                      );
+                    } else {
                       await context.read<SettingsCubit>().updateName(
                             controllerName.text,
                             context,
@@ -139,131 +112,129 @@ class _SettingsPageState extends State<SettingsPage> {
                       );
 
                       controllerName.clear();
-                    },
-                  );
-                },
-              ),
+                    }
+                  },
+                );
+              },
             ),
-          ),
-          Card(
-            color: btnColor,
-            child: ListTile(
-              title: Text(
-                'Change Profile Photo',
-                style: GoogleFonts.fredoka(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
-              trailing: IconButton(
-                icon: const Icon(
-                  Icons.photo,
-                  color: Colors.white,
-                ),
-                onPressed: () async {
-                  await context.read<ImageCubit>().setUserImage(context);
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => const MyApp(),
-                    ),
-                    (route) => false,
-                  );
-                },
-              ),
+            SettingsCardWidget(
+              txt: LocaleKeys.settings_page_change_password_text.locale,
+              icon: Icons.password,
+              func: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChangePasswordPage(),
+                  ),
+                );
+              },
             ),
-          ),
-          Card(
-            color: btnColor,
-            child: ListTile(
-              title: Text(
-                'Dark mode',
-                style: GoogleFonts.fredoka(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
-              trailing: Switch(
-                value: SharedManager.getBool(SharedKeys.isDarkMode)!,
-                onChanged: (value) {
-                  setState(() {
-                    isDarkTheme = !isDarkTheme;
-                  });
-                  if (value) {
-                    context.read<ThemeCubit>().setDarkTheme();
-                  } else {
-                    context.read<ThemeCubit>().setLightTheme();
-                  }
-                },
-              ),
+            SettingsCardWidget(
+              txt: LocaleKeys.settings_page_settings_photo_change_text.locale,
+              icon: Icons.photo,
+              func: () async {
+                await context.read<ImageCubit>().setUserImage(context);
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => const MyApp(),
+                  ),
+                  (route) => false,
+                );
+              },
             ),
-          ),
-          Card(
-            color: Colors.redAccent,
-            child: ListTile(
-              title: Text(
-                'Log out',
-                style: GoogleFonts.fredoka(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
-              trailing: IconButton(
-                icon: const Icon(
-                  Icons.exit_to_app,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  logout(context);
-                  AuthManager().setLoggedIn(false);
-                },
-              ),
-            ),
-          ),
-          Card(
-            color: isDarkThemeC ? bgColor : txtColor,
-            child: ListTile(
-              title: Text(
-                'Delete Account',
-                style: GoogleFonts.fredoka(
-                  color: isDarkThemeC ? txtColor : bgColor,
-                  fontSize: 18,
-                ),
-              ),
-              trailing: IconButton(
-                icon: const Icon(
-                  Icons.close,
-                  color: Colors.red,
-                ),
-                onPressed: () async {
-                  await deleteUserAccount(context);
-                  await AuthManager().setLoggedIn(false);
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => BlocProvider(
-                        create: (context) => AuthCubit(),
-                        child: LoginPage(),
-                      ),
-                    ),
-                    (route) => false,
-                  );
-                },
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: Divider(
-              thickness: 2,
-              height: 3,
+            Card(
               color: btnColor,
+              child: ListTile(
+                title: Text(
+                  LocaleKeys.settings_page_settings_darkmode_text.locale,
+                  style: GoogleFonts.fredoka(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+                trailing: Switch(
+                  value: SharedManager.getBool(SharedKeys.isDarkMode) ?? false,
+                  onChanged: (value) {
+                    setState(() {
+                      isDarkTheme = !isDarkTheme;
+                    });
+                    if (value) {
+                      context.read<ThemeCubit>().setDarkTheme();
+                    } else {
+                      context.read<ThemeCubit>().setLightTheme();
+                    }
+                  },
+                ),
+              ),
             ),
-          ),
-          SizedBox(
-            height: 200,
-            width: 200,
-            child: Image.asset("assets/images/voxxie_logo.png"),
-          ),
-        ],
+            Card(
+              color: Colors.redAccent,
+              child: ListTile(
+                title: Text(
+                  LocaleKeys.settings_page_settings_logout_text.locale,
+                  style: GoogleFonts.fredoka(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
+                trailing: IconButton(
+                  icon: const Icon(
+                    Icons.exit_to_app,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    logout(context);
+                    AuthManager().setLoggedIn(false);
+                  },
+                ),
+              ),
+            ),
+            Card(
+              color: isDarkThemeC ? bgColor : txtColor,
+              child: ListTile(
+                title: Text(
+                  LocaleKeys.settings_page_settings_delete_account_text.locale,
+                  style: GoogleFonts.fredoka(
+                    color: isDarkThemeC ? txtColor : bgColor,
+                    fontSize: 18,
+                  ),
+                ),
+                trailing: IconButton(
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.red,
+                  ),
+                  onPressed: () async {
+                    await deleteUserAccount(context);
+                    await AuthManager().setLoggedIn(false);
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider(
+                          create: (context) => AuthCubit(),
+                          child: LoginPage(),
+                        ),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Divider(
+                thickness: 2,
+                height: 3,
+                color: btnColor,
+              ),
+            ),
+            SizedBox(
+              height: context.dynamicHeight(0.2),
+              width: context.dynamicWidth(0.2),
+              child: Image.asset("assets/images/voxxie_logo.png"),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -274,7 +245,7 @@ class _SettingsPageState extends State<SettingsPage> {
       iconTheme: const IconThemeData(color: Colors.white),
       backgroundColor: btnColor,
       title: Text(
-        'Settings',
+        LocaleKeys.settings_page_settings_appbar_text.locale,
         style: GoogleFonts.fredoka(
           color: Colors.white,
           fontSize: 20,
@@ -301,9 +272,12 @@ class _SettingsPageState extends State<SettingsPage> {
             children: [
               TxtFormWidget(
                 topPad: 30,
-                hintTxt: "Change $value",
+                hintTxt: "",
                 controller: controller,
                 validatorTxt: (value) {
+                  if (value!.isEmpty) {
+                    return LocaleKeys.handle_texts_cannot_blank_text.locale;
+                  }
                   return null;
                 },
                 isVisible: false,
@@ -322,10 +296,12 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                     onPressed: () {
-                      changeFunc();
+                      if (formKey.currentState!.validate()) {
+                        changeFunc();
+                      }
                     },
                     child: Text(
-                      'Save',
+                      LocaleKeys.settings_page_show_btn_text.locale,
                       style: GoogleFonts.fredoka(
                         fontSize: 18,
                         color: Colors.white,

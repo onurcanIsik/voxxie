@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:voxxie/core/service/profile/profile.service.dart';
+import 'package:voxxie/core/util/extension/string.extension.dart';
+import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 import 'package:voxxie/model/user/user.model.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
@@ -36,20 +38,20 @@ class ProfileCubit extends Cubit<ProfileState> {
         return QuickAlert.show(
           context: context,
           type: QuickAlertType.success,
-          text: 'Product deleted',
+          text: LocaleKeys.handle_texts_success_product_deleted_text.locale,
         );
       } else {
         return QuickAlert.show(
           context: context,
           type: QuickAlertType.warning,
-          text: 'Try again later !',
+          text: LocaleKeys.handle_texts_something_wrong_text.locale,
         );
       }
     } catch (e) {
       return QuickAlert.show(
         context: context,
         type: QuickAlertType.error,
-        text: 'Something went wrong!',
+        text: LocaleKeys.handle_texts_something_wrong_text.locale,
       );
     }
   }

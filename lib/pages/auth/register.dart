@@ -3,21 +3,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/bloc/auth/auth.bloc.dart';
 import 'package:voxxie/core/bloc/image/image.bloc.dart';
 import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/components/auth/btn_widget.dart';
 import 'package:voxxie/core/components/auth/txt_form.widget.dart';
+import 'package:voxxie/core/util/extension/string.extension.dart';
+import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 import 'package:voxxie/pages/auth/login.dart';
+import 'package:voxxie/pages/policy/policy.dart';
 
-class RegisterPage extends StatelessWidget {
-  RegisterPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController usernameController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
+
+  bool isAccept = false;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +70,8 @@ class RegisterPage extends StatelessWidget {
                   ),
                   TxtFormWidget(
                     topPad: 40,
-                    hintTxt: "Username",
+                    hintTxt:
+                        LocaleKeys.authentication_page_username_text.locale,
                     controller: usernameController,
                     validatorTxt: (value) {
                       if (value!.isEmpty) {
@@ -82,7 +97,8 @@ class RegisterPage extends StatelessWidget {
                   ),
                   TxtFormWidget(
                     topPad: 10,
-                    hintTxt: "Password",
+                    hintTxt:
+                        LocaleKeys.authentication_page_password_text.locale,
                     controller: passwordController,
                     validatorTxt: (value) {
                       if (value!.isEmpty) {
@@ -93,19 +109,60 @@ class RegisterPage extends StatelessWidget {
                     isVisible: true,
                     isObscure: true,
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Checkbox(
+                          activeColor: Colors.green,
+                          value: isAccept,
+                          onChanged: (value) {
+                            setState(() {
+                              isAccept = !isAccept;
+                            });
+                          },
+                        ),
+                        TextButton(
+                          child: Text(
+                            LocaleKeys
+                                .authentication_page_privacy_policy_text.locale,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PolicyPage(),
+                              ),
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                  ),
                   BtnWidget(
                     topPdng: 30,
                     btnHeight: 50,
-                    btnText: "Register",
+                    btnText: LocaleKeys
+                        .authentication_page_register_button_text.locale,
                     btnWidth: 200,
                     btnFunc: () async {
                       if (formKey.currentState!.validate()) {
-                        await context.read<AuthCubit>().userRegister(
-                              emailController.text,
-                              passwordController.text,
-                              usernameController.text,
-                              context,
-                            );
+                        if (isAccept == true) {
+                          await context.read<AuthCubit>().userRegister(
+                                emailController.text,
+                                passwordController.text,
+                                usernameController.text,
+                                context,
+                              );
+                        } else {
+                          return QuickAlert.show(
+                            context: context,
+                            type: QuickAlertType.info,
+                            text: LocaleKeys
+                                .handle_texts_handle_privacy_policy.locale,
+                          );
+                        }
                       }
                     },
                   ),
@@ -132,13 +189,17 @@ class RegisterPage extends StatelessWidget {
                             ),
                             children: [
                               TextSpan(
-                                text: "You have already",
+                                text: LocaleKeys
+                                    .authentication_page_have_account_text1
+                                    .locale,
                                 style: GoogleFonts.fredoka(
                                   color: isDarkTheme ? Colors.white : txtColor,
                                 ),
                               ),
                               TextSpan(
-                                text: " account ?",
+                                text: LocaleKeys
+                                    .authentication_page_have_account_text2
+                                    .locale,
                                 style: GoogleFonts.fredoka(
                                   fontWeight: FontWeight.w800,
                                   color: isDarkTheme ? Colors.white : txtColor,

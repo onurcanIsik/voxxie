@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:voxxie/core/service/auth/auth.service.dart';
 import 'package:voxxie/core/service/manager/authManager.dart';
+import 'package:voxxie/core/util/extension/string.extension.dart';
+import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 import 'package:voxxie/pages/auth/login.dart';
 import 'package:voxxie/pages/home/nav/navbar.dart';
 
@@ -108,7 +110,7 @@ class AuthCubit extends Cubit<AuthState> {
       return QuickAlert.show(
         context: context,
         type: QuickAlertType.error,
-        text: 'Something went wrong',
+        text: LocaleKeys.handle_texts_something_wrong_text.locale,
       );
     }
   }

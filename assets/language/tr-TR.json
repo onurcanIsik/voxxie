@@ -1,0 +1,67 @@
+{
+    "authentication_page": {
+        "password_text": "Şifre",
+        "login_button_text": "Giris",
+        "have_a_account_text": "Henüz hesabınız",
+        "have_account_text": "yok mu ?",
+        "username_text": "Kullanıcı Adı",
+        "register_button_text": "Üye ol",
+        "have_account_text1": "Zaten bir hesabın ",
+        "have_account_text2": "var mı ?",
+        "privacy_policy_text": "Gizlilik politikasını kabul ediyorum"
+    },
+    "home_page": {
+        "missing_text": "Kayıp",
+        "pet_name_text": "Hayvan adı",
+        "pet_age_text": "Hayvan yası",
+        "location_text": "Konum",
+        "info_text": "Açıklama",
+        "send_mail_text": "Email gönder"
+    },
+    "add_vox_page": {
+        "app_bar_text": "Voxx Ekle",
+        "pet_name_text": "İsmi",
+        "pet_genus_text": "Tür",
+        "pet_age_text": "Yas",
+        "pet_color_text": "Renk",
+        "add_location_text": "Konum",
+        "add_information_text": "Açıklama",
+        "add_vox_button_text": "Paylas"
+    },
+    "profile_page": {
+        "profile_appbar_text": "Profil",
+        "profile_delete_text": "Sil",
+        "profile_update_text": "Güncelle"
+    },
+    "settings_page": {
+        "settings_appbar_text": "Ayarlar",
+        "settings_email_verification_text": "Email onayla",
+        "settings_email_change_text": "Email değis",
+        "settings_username_change_text": "Kullanıcı adı değistir",
+        "settings_photo_change_text": "Fotoğrafını değistir",
+        "settings_darkmode_text": "Karanlık mod",
+        "settings_logout_text": "Çıkıs yap",
+        "settings_delete_account_text": "Hesabımı sil",
+        "change_password_text": "Sifre değistir",
+        "show_btn_text": "Kaydet",
+        "old_password_text": "Eski sifren",
+        "new_password_text": "Yeni sifren",
+        "repeat_password_text": "Tekrar sifren"
+    },
+    "handle_texts": {
+        "something_wrong_text": "Bir şeyler ters gitti lütfen sonra deneyin !",
+        "success_product_deleted_text": "Başarıyla silindi",
+        "username_already_use_text": "Bu kullanıcı adı daha önce alınmış",
+        "weak_password_text": "Zayıf şifre",
+        "email_already_use_text": "Email önceden kullanılıyor",
+        "user_not_found_text": "Kullanıcı bulunamadı",
+        "wrong_password_text": "Yanlış şifre",
+        "post_shared_text": "Başarıyla paylaşıldı",
+        "post_updated_text": "Başarıyla güncellendi",
+        "email_cannot_empty_text": "Email bos olamaz",
+        "username_cannot_empty_text": "Username bos olamaz",
+        "cannot_blank_text": "Bos olamaz",
+        "handle_old_password_text": "Please validate your entered password",
+        "handle_privacy_policy": "Gizlilik sözlesmesini onaylamanız gerekiyor"
+    }
+}

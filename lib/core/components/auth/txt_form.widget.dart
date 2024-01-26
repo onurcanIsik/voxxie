@@ -1,14 +1,17 @@
 // ignore_for_file: body_might_complete_normally_nullable, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:voxxie/colors/colors.dart';
+import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 
 class TxtFormWidget extends StatefulWidget {
   final double topPad;
   final String hintTxt;
   final TextEditingController controller;
   final String? Function(String?)? validatorTxt;
-  bool isVisible; // Bu değeri burada tutuyoruz
+  bool isVisible;
   bool isObscure;
 
   TxtFormWidget({
@@ -28,10 +31,11 @@ class TxtFormWidget extends StatefulWidget {
 class _TxtFormWidgetState extends State<TxtFormWidget> {
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return Padding(
       padding: EdgeInsets.only(left: 30, right: 30, top: widget.topPad),
       child: TextFormField(
-        style: TextStyle(color: txtColor),
+        style: TextStyle(color: isDarkTheme ? bgColor : txtColor),
         validator: widget.validatorTxt,
         controller: widget.controller,
         onTap: () {
@@ -47,6 +51,7 @@ class _TxtFormWidgetState extends State<TxtFormWidget> {
                   : const Icon(Icons.remove_red_eye)
               : null,
           hintText: widget.hintTxt,
+          hintStyle: GoogleFonts.fredoka(),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
             borderSide: BorderSide(color: btnColor),

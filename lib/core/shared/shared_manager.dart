@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:voxxie/core/shared/enums/shared_keys.dart';
+import 'package:voxxie/core/util/enums/shared_keys.dart';
 
 class SharedManager {
   static late SharedPreferences _prefs;

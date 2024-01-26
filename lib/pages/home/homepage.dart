@@ -1,14 +1,16 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterflow_paginate_firestore/bloc/pagination_listeners.dart';
+import 'package:flutterflow_paginate_firestore/paginate_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/bloc/auth/auth.bloc.dart';
 import 'package:voxxie/core/bloc/profile/profile.bloc.dart';
-import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/bloc/vox/vox.bloc.dart';
 import 'package:voxxie/core/components/home/voxCard.widget.dart';
 import 'package:voxxie/core/service/manager/authManager.dart';
@@ -78,171 +80,72 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         Expanded(
-          child: RefreshIndicator(
-            onRefresh: () async {
-              BlocProvider.of<VoxxieCubit>(context).getAllVox();
-            },
-            child: _buildVoxList(context, state),
-          ),
+          child: _buildVoxList(context, state),
         ),
       ],
     );
   }
 
-  Widget _buildVoxList(BuildContext context, VoxxieState state) {
-    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
-    if (state is VoxxieLoadingState) {
-      return const Center(
-        child: CircularProgressIndicator(),
+  PaginateRefreshedChangeListener refreshChangeListener =
+      PaginateRefreshedChangeListener();
+
+  final path = FirebaseFirestore.instance.collection('Voxx').orderBy(
+        'voxDate',
+        descending: true,
       );
-    } else if (state is VoxxieLoadedState) {
-      final voxData = state.allProduct;
-      if (voxData.isEmpty) {
-        return Center(
-          child: SizedBox(
-            height: 100,
-            width: 100,
-            child: Image.asset(
-              'assets/images/emptyPage.png',
-            ),
-          ),
-        );
-      }
-      return ListView.builder(
-        itemCount: voxData.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => VoxDetailPage(
-                      petImage: voxData[index].voxImage.toString(),
-                      petInfo: voxData[index].voxInfo.toString(),
-                      petGen: voxData[index].voxGen.toString(),
-                      petName: voxData[index].voxName.toString(),
-                      petOwnerMail: voxData[index].ownerMail.toString(),
-                    ),
-                  ),
-                );
-              },
-              child: Container(
-                height: 160,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: isDarkTheme ? bgColor : Colors.white,
-                  border: Border.all(
-                    color: isDarkTheme ? Colors.white : Colors.black,
+
+  Widget _buildVoxList(BuildContext context, VoxxieState state) {
+    return paginateData(context);
+  }
+
+  RefreshIndicator paginateData(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: () async {
+        refreshChangeListener.refreshed = true;
+        await context.read<VoxxieCubit>().getAllVox();
+        return Future.value();
+      },
+      child: PaginateFirestore(
+        onError: (e) => Center(
+          child: Image.asset("assets/images/error.png"),
+        ),
+        onEmpty: Center(
+          child: Image.asset("assets/images/emptyPage.png"),
+        ),
+        itemsPerPage: 3,
+        itemBuilderType: PaginateBuilderType.listView,
+        query: path,
+        listeners: [
+          refreshChangeListener,
+        ],
+        itemBuilder: (context, snapshot, index) {
+          final Map<String, dynamic> data =
+              snapshot[index].data() as Map<String, dynamic>;
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => VoxDetailPage(
+                    petImage: data['voxImage'],
+                    petInfo: data['voxInfo'],
+                    petName: data['voxName'],
+                    petGen: data['voxGen'],
+                    petOwnerMail: data['ownerMail'],
                   ),
                 ),
-                child: Row(
-                  children: [
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 158,
-                              width: 150,
-                              child: ClipRRect(
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  bottomLeft: Radius.circular(20),
-                                ),
-                                child: Image.network(
-                                  voxData[index].voxImage.toString(),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Row(
-                            children: [
-                              Text(
-                                "Missing      ",
-                                style: GoogleFonts.fredoka(
-                                  fontSize: 20,
-                                  color: Colors.redAccent,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              Text(
-                                voxData[index].date.toString(),
-                                style: GoogleFonts.fredoka(
-                                  color: txtColor.withOpacity(0.5),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        VoxCard(
-                          titleTxt: "Pet Name: ",
-                          voxTxt: voxData[index].voxName.toString(),
-                        ),
-                        VoxCard(
-                          titleTxt: "Pet Age: ",
-                          voxTxt: voxData[index].voxAge.toString(),
-                        ),
-                        VoxCard(
-                          titleTxt: "Location: ",
-                          voxTxt: voxData[index].voxLoc.toString(),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "Info: ",
-                              style: GoogleFonts.fredoka(
-                                fontSize: 18,
-                                color: logoColor,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 150,
-                              child: Text(
-                                voxData[index].voxInfo.toString(),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: GoogleFonts.fredoka(
-                                  fontSize: 15,
-                                  color: txtColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              );
+            },
+            child: VoxCard(
+              voxImage: data['voxImage'],
+              voxName: data['voxName'],
+              voxLoc: data['voxLoc'],
+              voxInfo: data['voxInfo'],
             ),
           );
         },
-      );
-    } else {
-      return Center(
-        child: SizedBox(
-          height: 300,
-          width: 300,
-          child: Image.asset("assets/images/voxxie_logo.png"),
-        ),
-      );
-    }
+      ),
+    );
   }
 
   AppBar _appBar(BuildContext context) {
@@ -250,9 +153,13 @@ class _HomePageState extends State<HomePage> {
       iconTheme: const IconThemeData(color: Colors.white),
       backgroundColor: btnColor,
       centerTitle: true,
-      title: SizedBox(
-        height: 100,
-        child: Image.asset('assets/images/voxxie_logo.png'),
+      title: Text(
+        'voxxie',
+        style: GoogleFonts.fredoka(
+          color: Colors.white,
+          fontSize: 25,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }

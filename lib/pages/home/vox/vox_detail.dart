@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/components/auth/btn_widget.dart';
+import 'package:voxxie/core/util/extension/string.extension.dart';
+import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 import 'package:voxxie/pages/home/mail/send_mail.dart';
 
 class VoxDetailPage extends StatefulWidget {
@@ -34,13 +37,20 @@ class _VoxDetailPageState extends State<VoxDetailPage> {
           SizedBox(
             height: 300,
             width: double.infinity,
-            child: Image.network(
-              widget.petImage,
+            child: CachedNetworkImage(
+              imageUrl: widget.petImage,
               fit: BoxFit.cover,
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  Center(
+                child: CircularProgressIndicator(
+                  value: downloadProgress.progress,
+                ),
+              ),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
           ),
           Text(
-            'Pet Name: ${widget.petName}',
+            '${LocaleKeys.home_page_pet_name_text.locale}: ${widget.petName}',
             style: GoogleFonts.fredoka(
               fontSize: 21,
               fontWeight: FontWeight.w500,
@@ -74,7 +84,7 @@ class _VoxDetailPageState extends State<VoxDetailPage> {
           BtnWidget(
             topPdng: 0,
             btnHeight: 70,
-            btnText: 'Send to mail',
+            btnText: LocaleKeys.home_page_send_mail_text.locale,
             btnWidth: 300,
             btnFunc: () {
               Navigator.push(
@@ -99,7 +109,7 @@ class _VoxDetailPageState extends State<VoxDetailPage> {
       backgroundColor: Colors.redAccent,
       iconTheme: const IconThemeData(color: Colors.white),
       title: Text(
-        'Missing',
+        LocaleKeys.home_page_missing_text.locale,
         style: GoogleFonts.fredoka(
           fontSize: 21,
           fontWeight: FontWeight.w500,

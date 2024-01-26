@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:voxxie/core/service/auth/IAuth.service.dart';
+import 'package:voxxie/core/util/extension/string.extension.dart';
+import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 
 class AuthServices implements IAuthService {
   var instance = FirebaseFirestore.instance;
@@ -27,21 +29,21 @@ class AuthServices implements IAuthService {
         QuickAlert.show(
           context: context,
           type: QuickAlertType.warning,
-          text: 'User not found !',
+          text: LocaleKeys.handle_texts_user_not_found_text.locale,
         );
         return left('User not found');
       } else if (e.code == 'wrong-password') {
         QuickAlert.show(
           context: context,
           type: QuickAlertType.warning,
-          text: 'Wrong password provided for that user.',
+          text: LocaleKeys.handle_texts_wrong_password_text.locale,
         );
         return left('Wrong password');
       } else {
         QuickAlert.show(
           context: context,
           type: QuickAlertType.error,
-          text: 'An unexpected error occurred.',
+          text: LocaleKeys.handle_texts_something_wrong_text.locale,
         );
         return left('Unexpected error');
       }
@@ -74,7 +76,7 @@ class AuthServices implements IAuthService {
         QuickAlert.show(
           context: context,
           type: QuickAlertType.warning,
-          text: 'This username already in use!',
+          text: LocaleKeys.handle_texts_username_already_use_text.locale,
         );
         return left('This username already in use!');
       }
@@ -83,13 +85,13 @@ class AuthServices implements IAuthService {
         QuickAlert.show(
           context: context,
           type: QuickAlertType.warning,
-          text: 'Weak password!',
+          text: LocaleKeys.handle_texts_weak_password_text.locale,
         );
       } else if (e.code == 'email-already-in-use') {
         QuickAlert.show(
           context: context,
           type: QuickAlertType.warning,
-          text: 'Email already in use!',
+          text: LocaleKeys.handle_texts_email_already_use_text.locale,
         );
       }
     } catch (err) {

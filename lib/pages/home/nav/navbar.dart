@@ -71,7 +71,7 @@ class _NavbarPageState extends State<NavbarPage> {
         child: DotNavigationBar(
           borderRadius: 12,
           marginR: const EdgeInsets.symmetric(horizontal: 60, vertical: 0),
-          backgroundColor: isDarkThemeC ? bgColor : txtColor,
+          backgroundColor: isDarkThemeC ? bgColor : postBgColor,
           unselectedItemColor: isDarkThemeC ? Colors.grey : bgColor,
           onTap: changePage,
           currentIndex: selectedIndex,

@@ -7,8 +7,10 @@ import 'package:voxxie/core/bloc/ivox/ivox.bloc.dart';
 import 'package:voxxie/core/bloc/settings/set.bloc.dart';
 import 'package:voxxie/core/bloc/shared/set_user.bloc.dart';
 import 'package:voxxie/core/components/profile/user_info.widget.dart';
-import 'package:voxxie/core/shared/enums/shared_keys.dart';
+import 'package:voxxie/core/util/enums/shared_keys.dart';
 import 'package:voxxie/core/shared/shared_manager.dart';
+import 'package:voxxie/core/util/extension/string.extension.dart';
+import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 import 'package:voxxie/pages/settings/settings.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -32,7 +34,7 @@ class ProfilePage extends StatelessWidget {
             if (state is IVoxxieLoadedState) {
               final ivox = state.ivox;
               return UserInfoWidget(
-                userName: userName!,
+                userName: userName ?? "error",
                 userImage: userImage,
                 userPostCount: ivox.length.toString(),
               );
@@ -50,7 +52,7 @@ class ProfilePage extends StatelessWidget {
       iconTheme: const IconThemeData(color: Colors.white),
       backgroundColor: btnColor,
       title: Text(
-        'Profile',
+        LocaleKeys.profile_page_profile_appbar_text.locale,
         style: GoogleFonts.fredoka(
           color: Colors.white,
           fontSize: 22,

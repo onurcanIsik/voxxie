@@ -11,6 +11,8 @@ import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/components/auth/btn_widget.dart';
 import 'package:voxxie/core/components/auth/txt_form.widget.dart';
 import 'package:voxxie/core/service/manager/authManager.dart';
+import 'package:voxxie/core/util/extension/string.extension.dart';
+import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 import 'package:voxxie/pages/auth/register.dart';
 
 class LoginPage extends StatelessWidget {
@@ -60,7 +62,8 @@ class LoginPage extends StatelessWidget {
                   ),
                   TxtFormWidget(
                     topPad: 10,
-                    hintTxt: "Password",
+                    hintTxt:
+                        LocaleKeys.authentication_page_password_text.locale,
                     controller: passwordController,
                     validatorTxt: (value) {
                       if (value!.isEmpty) {
@@ -74,7 +77,8 @@ class LoginPage extends StatelessWidget {
                   BtnWidget(
                     topPdng: 30,
                     btnHeight: 50,
-                    btnText: "Login",
+                    btnText:
+                        LocaleKeys.authentication_page_login_button_text.locale,
                     btnWidth: 200,
                     btnFunc: () async {
                       if (formKey.currentState!.validate()) {
@@ -120,13 +124,16 @@ class LoginPage extends StatelessWidget {
                             ),
                             children: [
                               TextSpan(
-                                text: "You don't have a",
+                                text: LocaleKeys
+                                    .authentication_page_have_a_account_text
+                                    .locale,
                                 style: GoogleFonts.fredoka(
                                   color: isDarkTheme ? Colors.white : txtColor,
                                 ),
                               ),
                               TextSpan(
-                                text: " account ?",
+                                text:
+                                    " ${LocaleKeys.authentication_page_have_account_text.locale}",
                                 style: GoogleFonts.fredoka(
                                   fontWeight: FontWeight.w800,
                                   color: isDarkTheme ? Colors.white : txtColor,

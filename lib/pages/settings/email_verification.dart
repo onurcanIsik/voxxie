@@ -22,6 +22,7 @@ class EmailVerification extends StatefulWidget {
 
 class _EmailVerificationState extends State<EmailVerification> {
   var authEmail = FirebaseAuth.instance.currentUser!.email;
+  final AuthManager authManager = AuthManager();
   bool isEmailVerified = false;
   Timer? timer;
 
@@ -43,22 +44,23 @@ class _EmailVerificationState extends State<EmailVerification> {
     });
 
     if (isEmailVerified) {
-      QuickAlert.show(context: context, type: QuickAlertType.success)
+      QuickAlert.show(
+              context: context,
+              type: QuickAlertType.success,
+              text: '') //! HATA MESAJI EKLE
           .then(
             (value) => timer?.cancel(),
           )
           .then(
-            (value) => Navigator.of(context)
-                .pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => BlocProvider(
-                        create: (context) => AuthCubit(),
-                        child: LoginPage(),
+            (value) => AuthManager().setVerifiedIn(true).then(
+                  (value) => Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider(
+                          create: (context) => AuthCubit(),
+                          child: LoginPage(),
+                        ),
                       ),
-                    ),
-                    (route) => false)
-                .then(
-                  (value) => AuthManager().setVerifiedIn(true),
+                      (route) => false),
                 ),
           );
     }
@@ -73,6 +75,7 @@ class _EmailVerificationState extends State<EmailVerification> {
   @override
   Widget build(BuildContext context) {
     final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(

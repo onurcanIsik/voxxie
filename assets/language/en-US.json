@@ -1,0 +1,67 @@
+{
+    "authentication_page": {
+        "password_text": "Password",
+        "login_button_text": "Login",
+        "have_a_account_text": "You don't have a",
+        "have_account_text": "account ?",
+        "username_text": "Username",
+        "register_button_text": "Register",
+        "have_account_text1": "You have already",
+        "have_account_text2": "account ?",
+        "privacy_policy_text": "I accept privacy policy"
+    },
+    "home_page": {
+        "missing_text": "Missing",
+        "pet_name_text": "Pet name",
+        "pet_age_text": "Pet age",
+        "location_text": "Location",
+        "info_text": "Info",
+        "send_mail_text": "Send to mail"
+    },
+    "add_vox_page": {
+        "app_bar_text": "Add Voxx",
+        "pet_name_text": "Name",
+        "pet_genus_text": "Genus",
+        "pet_age_text": "Age",
+        "pet_color_text": "Color",
+        "add_location_text": "Location",
+        "add_information_text": "Information about",
+        "add_vox_button_text": "Post"
+    },
+    "profile_page": {
+        "profile_appbar_text": "Profile",
+        "profile_delete_text": "Delete",
+        "profile_update_text": "Update"
+    },
+    "settings_page": {
+        "settings_appbar_text": "Settings",
+        "settings_email_verification_text": "Email verification",
+        "settings_email_change_text": "Change email",
+        "settings_username_change_text": "Change username",
+        "settings_photo_change_text": "Change profile photo",
+        "settings_darkmode_text": "Dark mode",
+        "settings_logout_text": "Logout",
+        "settings_delete_account_text": "Delete account",
+        "change_password_text": "Change password",
+        "show_btn_text": "Save",
+        "old_password_text": "Old password",
+        "new_password_text": "New password",
+        "repeat_password_text": "Repeat password"
+    },
+    "handle_texts": {
+        "something_wrong_text": "Something went wrong! Try again later",
+        "success_product_deleted_text": "Product deleted",
+        "username_already_use_text": "This username already in use!",
+        "weak_password_text": "Weak password!",
+        "email_already_use_text": "Email already in use!",
+        "user_not_found_text": "User not found !",
+        "wrong_password_text": "Wrong password provided for that user.",
+        "post_shared_text": "Post shared",
+        "post_updated_text": "post updated",
+        "email_cannot_empty_text": "Email can not be empty",
+        "username_cannot_empty_text": "Username can not be empty",
+        "cannot_blank_text": "Cannot be blank",
+        "handle_old_password_text": "Please verify the password you entered",
+        "handle_privacy_policy": "You need to approve the privacy agreement"
+    }
+}

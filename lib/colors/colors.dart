@@ -4,3 +4,4 @@ final HexColor bgColor = HexColor("DDF2FD");
 final HexColor txtColor = HexColor("#011D2B");
 final HexColor btnColor = HexColor("0174BE");
 final HexColor logoColor = HexColor("#25A9E0");
+final HexColor postBgColor = HexColor("2D3250");

@@ -15,6 +15,9 @@ import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/bloc/vox/vox.bloc.dart';
 import 'package:voxxie/core/components/auth/btn_widget.dart';
 import 'package:voxxie/core/components/auth/txt_form.widget.dart';
+import 'package:voxxie/core/service/manager/authManager.dart';
+import 'package:voxxie/core/util/extension/string.extension.dart';
+import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 import 'package:voxxie/model/voxxie/vox.model.dart';
 
 class AddVoxxiePage extends StatefulWidget {
@@ -32,6 +35,7 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
   final TextEditingController voxInfo = TextEditingController();
   final TextEditingController voxLoc = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  final AuthManager authManager = AuthManager();
   String? image = '';
   bool isLoading = false;
 
@@ -84,7 +88,7 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
               ),
               TxtFormWidget(
                 topPad: 30,
-                hintTxt: "Name",
+                hintTxt: LocaleKeys.add_vox_page_pet_name_text.locale,
                 controller: voxName,
                 validatorTxt: (value) {
                   if (value!.isEmpty) {
@@ -97,7 +101,7 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
               ),
               TxtFormWidget(
                 topPad: 10,
-                hintTxt: "Genus",
+                hintTxt: LocaleKeys.add_vox_page_pet_genus_text.locale,
                 controller: voxGenus,
                 validatorTxt: (value) {
                   if (value!.isEmpty) {
@@ -110,7 +114,7 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
               ),
               TxtFormWidget(
                 topPad: 10,
-                hintTxt: "Age",
+                hintTxt: LocaleKeys.add_vox_page_pet_age_text.locale,
                 controller: voxAge,
                 validatorTxt: (value) {
                   if (value!.isEmpty) {
@@ -123,7 +127,7 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
               ),
               TxtFormWidget(
                 topPad: 10,
-                hintTxt: "Color",
+                hintTxt: LocaleKeys.add_vox_page_pet_color_text.locale,
                 controller: voxColor,
                 validatorTxt: (value) {
                   if (value!.isEmpty) {
@@ -136,7 +140,7 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
               ),
               TxtFormWidget(
                 topPad: 10,
-                hintTxt: "Location",
+                hintTxt: LocaleKeys.add_vox_page_add_location_text.locale,
                 controller: voxLoc,
                 validatorTxt: (value) {
                   if (value!.isEmpty) {
@@ -149,7 +153,7 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
               ),
               TxtFormWidget(
                 topPad: 10,
-                hintTxt: "information about",
+                hintTxt: LocaleKeys.add_vox_page_add_information_text.locale,
                 controller: voxInfo,
                 validatorTxt: (value) {
                   if (value!.isEmpty) {
@@ -163,37 +167,52 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
               BtnWidget(
                 topPdng: 20,
                 btnHeight: 50,
-                btnText: "Post",
+                btnText: LocaleKeys.add_vox_page_add_vox_button_text.locale,
                 btnWidth: 150,
                 btnFunc: () async {
                   DateTime now = DateTime.now();
                   final String formattedDateTime =
                       DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
                   if (formKey.currentState!.validate()) {
-                    await context.read<VoxxieCubit>().setVoxPost(
-                          VoxModel(
-                            voxName: voxName.text,
-                            voxGen: voxGenus.text,
-                            voxAge: voxAge.text,
-                            voxColor: voxColor.text,
-                            voxLoc: voxLoc.text,
-                            voxInfo: voxInfo.text,
-                            voxImage: image,
-                            date: formattedDateTime,
-                            ownerMail: FirebaseAuth.instance.currentUser!.email,
-                          ),
-                          context,
-                        );
-                    voxName.clear();
-                    voxGenus.clear();
-                    voxColor.clear();
-                    voxAge.clear();
-                    voxLoc.clear();
-                    voxInfo.clear();
+                    if (authManager.isVerified == false) {
+                      QuickAlert.show(
+                        context: context,
+                        type: QuickAlertType.warning,
+                        text: 'You have to comfirm your mail on settings !',
+                      );
+                    } else if (image!.isEmpty) {
+                      QuickAlert.show(
+                        context: context,
+                        type: QuickAlertType.warning,
+                        text: 'You have to choose photo',
+                      );
+                    } else {
+                      await context.read<VoxxieCubit>().setVoxPost(
+                            VoxModel(
+                              voxName: voxName.text,
+                              voxGen: voxGenus.text,
+                              voxAge: voxAge.text,
+                              voxColor: voxColor.text,
+                              voxLoc: voxLoc.text,
+                              voxInfo: voxInfo.text,
+                              voxImage: image,
+                              date: formattedDateTime,
+                              ownerMail:
+                                  FirebaseAuth.instance.currentUser!.email,
+                            ),
+                            context,
+                          );
+                      voxName.clear();
+                      voxGenus.clear();
+                      voxColor.clear();
+                      voxAge.clear();
+                      voxLoc.clear();
+                      voxInfo.clear();
 
-                    setState(() {
-                      image = "";
-                    });
+                      setState(() {
+                        image = "";
+                      });
+                    }
                   }
                 },
               ),
@@ -211,7 +230,7 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
       iconTheme: const IconThemeData(color: Colors.white),
       backgroundColor: btnColor,
       title: Text(
-        'Add Voxx',
+        LocaleKeys.add_vox_page_app_bar_text.locale,
         style: GoogleFonts.fredoka(
           fontWeight: FontWeight.w600,
           color: Colors.white,

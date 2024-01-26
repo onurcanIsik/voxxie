@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:voxxie/core/service/vox/Vox.service.dart';
+import 'package:voxxie/core/util/extension/string.extension.dart';
+import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 import 'package:voxxie/model/voxxie/vox.model.dart';
 
 class VoxxieCubit extends Cubit<VoxxieState> {
@@ -21,13 +23,13 @@ class VoxxieCubit extends Cubit<VoxxieState> {
         return QuickAlert.show(
           context: context,
           type: QuickAlertType.success,
-          text: 'Post shared',
+          text: LocaleKeys.handle_texts_post_shared_text.locale,
         );
       } else {
         return QuickAlert.show(
           context: context,
           type: QuickAlertType.warning,
-          text: 'Something went wrong!',
+          text: LocaleKeys.handle_texts_something_wrong_text.locale,
         );
       }
     } catch (err) {
@@ -50,13 +52,13 @@ class VoxxieCubit extends Cubit<VoxxieState> {
         return QuickAlert.show(
           context: context,
           type: QuickAlertType.success,
-          text: 'Post updated',
+          text: LocaleKeys.handle_texts_post_updated_text.locale,
         );
       } else {
         return QuickAlert.show(
           context: context,
           type: QuickAlertType.warning,
-          text: 'Something went wrong!',
+          text: LocaleKeys.handle_texts_something_wrong_text.locale,
         );
       }
     } catch (err) {

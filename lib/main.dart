@@ -1,24 +1,38 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voxxie/core/bloc/profile/profile.bloc.dart';
+import 'package:voxxie/core/bloc/settings/set.bloc.dart';
 import 'package:voxxie/core/bloc/settings/settings_state.dart';
 import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/bloc/shared/set_user.bloc.dart';
+import 'package:voxxie/core/constant/constant.dart';
 import 'package:voxxie/core/shared/shared_manager.dart';
 import 'package:voxxie/core/theme/dark.theme.dart';
 import 'package:voxxie/core/theme/light.theme.dart';
 import 'package:voxxie/firebase_options.dart';
+import 'package:voxxie/core/util/localization/language_manager.dart';
 import 'package:voxxie/pages/splash/splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedManager.init();
+  await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+
+  runApp(
+    EasyLocalization(
+      supportedLocales: LanguageManager.instance.supportedLocales,
+      path: ApplicationConstants.LANG_ASSET_PATH,
+      fallbackLocale: LanguageManager.instance.supportedLocales.first,
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -26,6 +40,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     final user = FirebaseAuth.instance.currentUser;
     if (user == null || user.uid.isEmpty) {
       return MultiBlocProvider(
@@ -38,6 +56,9 @@ class MyApp extends StatelessWidget {
           builder: (context, state) {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
               theme: context.watch<ThemeCubit>().state.isDarkTheme!
                   ? DarkTheme.darkTheme
                   : LightTheme.lightTheme,
@@ -58,6 +79,9 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => SharedUserCubit(),
           ),
+          BlocProvider(
+            create: (context) => SettingsCubit(),
+          ),
         ],
         child: BlocBuilder<ThemeCubit, SettinState>(
           builder: (context, state) {
@@ -74,6 +98,9 @@ class MyApp extends StatelessWidget {
                 }
                 return MaterialApp(
                   debugShowCheckedModeBanner: false,
+                  localizationsDelegates: context.localizationDelegates,
+                  supportedLocales: context.supportedLocales,
+                  locale: context.locale,
                   theme: context.watch<ThemeCubit>().state.isDarkTheme!
                       ? DarkTheme.darkTheme
                       : LightTheme.lightTheme,

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voxxie/core/bloc/settings/settings_state.dart';
-import 'package:voxxie/core/shared/enums/shared_keys.dart';
+import 'package:voxxie/core/util/enums/shared_keys.dart';
 import 'package:voxxie/core/shared/shared_manager.dart';
 
 class ThemeCubit extends Cubit<SettinState> {

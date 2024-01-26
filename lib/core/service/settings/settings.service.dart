@@ -18,9 +18,7 @@ class SettingsService implements ISettingsService {
       final user = _auth.currentUser;
       await user!.updateEmail(newMail);
       await user.sendEmailVerification();
-
       await users.doc(user.uid).update({'userMail': newMail});
-
       await AuthManager().setVerifiedIn(false);
 
       return right(unit);
@@ -40,6 +38,26 @@ class SettingsService implements ISettingsService {
         'userName': newName,
       });
 
+      return right(unit);
+    } catch (err) {
+      return left(throw UnimplementedError());
+    }
+  }
+
+  @override
+  Future<Either<String, Unit>> changePassword(
+    String newPassword,
+    String currentPassword,
+  ) async {
+    // todo: implement changePassword
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      final cred = EmailAuthProvider.credential(
+        email: user!.email!,
+        password: currentPassword,
+      );
+      await user.reauthenticateWithCredential(cred);
+      await user.updatePassword(newPassword);
       return right(unit);
     } catch (err) {
       return left(throw UnimplementedError());

@@ -30,11 +30,11 @@ class DarkTheme {
 InputDecorationTheme buildInputDecorationTheme() {
   return InputDecorationTheme(
     filled: true,
-    labelStyle: TextStyle(color: txtColor),
+    labelStyle: TextStyle(color: bgColor),
     isCollapsed: true,
     contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-    fillColor: bgColor,
-    hintStyle: TextStyle(color: txtColor),
+    fillColor: txtColor,
+    hintStyle: TextStyle(color: bgColor),
     iconColor: txtColor,
     errorStyle: GoogleFonts.manrope(
       color: Colors.red,
@@ -51,7 +51,7 @@ OutlineInputBorder buildOutlineInputBorder() {
   return OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide(
-      color: txtColor,
+      color: bgColor,
     ),
   );
 }

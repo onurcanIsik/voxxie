@@ -8,6 +8,8 @@ import 'package:voxxie/core/bloc/image/image.bloc.dart';
 import 'package:voxxie/core/bloc/ivox/ivox.bloc.dart';
 import 'package:voxxie/core/bloc/profile/profile.bloc.dart';
 import 'package:voxxie/core/bloc/vox/vox.bloc.dart';
+import 'package:voxxie/core/util/extension/string.extension.dart';
+import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 import 'package:voxxie/main.dart';
 import 'package:voxxie/pages/home/nav/navbar.dart';
 import 'package:voxxie/pages/home/vox/update/update_vox.dart';
@@ -316,7 +318,7 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
                           );
                         },
                         child: Text(
-                          'Delete',
+                          LocaleKeys.profile_page_profile_delete_text.locale,
                           style: GoogleFonts.fredoka(
                             fontSize: 18,
                             color: Colors.white,
@@ -350,7 +352,7 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
                           );
                         },
                         child: Text(
-                          'Update',
+                          LocaleKeys.profile_page_profile_update_text.locale,
                           style: GoogleFonts.fredoka(
                             fontSize: 18,
                             color: Colors.white,

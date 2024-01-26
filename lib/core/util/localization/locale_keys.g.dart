@@ -1,0 +1,64 @@
+// DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+
+abstract class  LocaleKeys {
+  static const authentication_page_password_text = 'authentication_page.password_text';
+  static const authentication_page_login_button_text = 'authentication_page.login_button_text';
+  static const authentication_page_have_a_account_text = 'authentication_page.have_a_account_text';
+  static const authentication_page_have_account_text = 'authentication_page.have_account_text';
+  static const authentication_page_username_text = 'authentication_page.username_text';
+  static const authentication_page_register_button_text = 'authentication_page.register_button_text';
+  static const authentication_page_have_account_text1 = 'authentication_page.have_account_text1';
+  static const authentication_page_have_account_text2 = 'authentication_page.have_account_text2';
+  static const authentication_page_privacy_policy_text = 'authentication_page.privacy_policy_text';
+  static const authentication_page = 'authentication_page';
+  static const home_page_missing_text = 'home_page.missing_text';
+  static const home_page_pet_name_text = 'home_page.pet_name_text';
+  static const home_page_pet_age_text = 'home_page.pet_age_text';
+  static const home_page_location_text = 'home_page.location_text';
+  static const home_page_info_text = 'home_page.info_text';
+  static const home_page_send_mail_text = 'home_page.send_mail_text';
+  static const home_page = 'home_page';
+  static const add_vox_page_app_bar_text = 'add_vox_page.app_bar_text';
+  static const add_vox_page_pet_name_text = 'add_vox_page.pet_name_text';
+  static const add_vox_page_pet_genus_text = 'add_vox_page.pet_genus_text';
+  static const add_vox_page_pet_age_text = 'add_vox_page.pet_age_text';
+  static const add_vox_page_pet_color_text = 'add_vox_page.pet_color_text';
+  static const add_vox_page_add_location_text = 'add_vox_page.add_location_text';
+  static const add_vox_page_add_information_text = 'add_vox_page.add_information_text';
+  static const add_vox_page_add_vox_button_text = 'add_vox_page.add_vox_button_text';
+  static const add_vox_page = 'add_vox_page';
+  static const profile_page_profile_appbar_text = 'profile_page.profile_appbar_text';
+  static const profile_page_profile_delete_text = 'profile_page.profile_delete_text';
+  static const profile_page_profile_update_text = 'profile_page.profile_update_text';
+  static const profile_page = 'profile_page';
+  static const settings_page_settings_appbar_text = 'settings_page.settings_appbar_text';
+  static const settings_page_settings_email_verification_text = 'settings_page.settings_email_verification_text';
+  static const settings_page_settings_email_change_text = 'settings_page.settings_email_change_text';
+  static const settings_page_settings_username_change_text = 'settings_page.settings_username_change_text';
+  static const settings_page_settings_photo_change_text = 'settings_page.settings_photo_change_text';
+  static const settings_page_settings_darkmode_text = 'settings_page.settings_darkmode_text';
+  static const settings_page_settings_logout_text = 'settings_page.settings_logout_text';
+  static const settings_page_settings_delete_account_text = 'settings_page.settings_delete_account_text';
+  static const settings_page_change_password_text = 'settings_page.change_password_text';
+  static const settings_page_show_btn_text = 'settings_page.show_btn_text';
+  static const settings_page_old_password_text = 'settings_page.old_password_text';
+  static const settings_page_new_password_text = 'settings_page.new_password_text';
+  static const settings_page_repeat_password_text = 'settings_page.repeat_password_text';
+  static const settings_page = 'settings_page';
+  static const handle_texts_something_wrong_text = 'handle_texts.something_wrong_text';
+  static const handle_texts_success_product_deleted_text = 'handle_texts.success_product_deleted_text';
+  static const handle_texts_username_already_use_text = 'handle_texts.username_already_use_text';
+  static const handle_texts_weak_password_text = 'handle_texts.weak_password_text';
+  static const handle_texts_email_already_use_text = 'handle_texts.email_already_use_text';
+  static const handle_texts_user_not_found_text = 'handle_texts.user_not_found_text';
+  static const handle_texts_wrong_password_text = 'handle_texts.wrong_password_text';
+  static const handle_texts_post_shared_text = 'handle_texts.post_shared_text';
+  static const handle_texts_post_updated_text = 'handle_texts.post_updated_text';
+  static const handle_texts_email_cannot_empty_text = 'handle_texts.email_cannot_empty_text';
+  static const handle_texts_username_cannot_empty_text = 'handle_texts.username_cannot_empty_text';
+  static const handle_texts_cannot_blank_text = 'handle_texts.cannot_blank_text';
+  static const handle_texts_handle_old_password_text = 'handle_texts.handle_old_password_text';
+  static const handle_texts_handle_privacy_policy = 'handle_texts.handle_privacy_policy';
+  static const handle_texts = 'handle_texts';
+
+}
