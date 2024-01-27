@@ -15,6 +15,7 @@ import 'package:voxxie/core/bloc/vox/vox.bloc.dart';
 import 'package:voxxie/core/components/home/voxCard.widget.dart';
 import 'package:voxxie/core/service/manager/authManager.dart';
 import 'package:voxxie/pages/auth/login.dart';
+import 'package:voxxie/pages/chat/my_chat_page.dart';
 import 'package:voxxie/pages/home/vox/vox_detail.dart';
 
 class HomePage extends StatefulWidget {
@@ -91,7 +92,7 @@ class _HomePageState extends State<HomePage> {
 
   final path = FirebaseFirestore.instance.collection('Voxx').orderBy(
         'voxDate',
-        descending: true,
+        descending: false,
       );
 
   Widget _buildVoxList(BuildContext context, VoxxieState state) {
@@ -110,7 +111,10 @@ class _HomePageState extends State<HomePage> {
           child: Image.asset("assets/images/error.png"),
         ),
         onEmpty: Center(
-          child: Image.asset("assets/images/emptyPage.png"),
+          child: Image.asset(
+            "assets/images/emptyPage.png",
+            scale: 20,
+          ),
         ),
         itemsPerPage: 3,
         itemBuilderType: PaginateBuilderType.listView,
@@ -123,6 +127,10 @@ class _HomePageState extends State<HomePage> {
               snapshot[index].data() as Map<String, dynamic>;
           return GestureDetector(
             onTap: () {
+              if (FirebaseAuth.instance.currentUser!.email ==
+                  data['ownerMail']) {
+                return;
+              }
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -132,6 +140,7 @@ class _HomePageState extends State<HomePage> {
                     petName: data['voxName'],
                     petGen: data['voxGen'],
                     petOwnerMail: data['ownerMail'],
+                    ownerID: data['userID'],
                   ),
                 ),
               );
@@ -161,6 +170,19 @@ class _HomePageState extends State<HomePage> {
           fontWeight: FontWeight.w600,
         ),
       ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MyChatPhage(),
+              ),
+            );
+          },
+          icon: const Icon(Icons.send),
+        )
+      ],
     );
   }
 }

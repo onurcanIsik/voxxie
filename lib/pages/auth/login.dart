@@ -112,7 +112,7 @@ class LoginPage extends StatelessWidget {
                                     create: (context) => ImageCubit(),
                                   )
                                 ],
-                                child: RegisterPage(),
+                                child: const RegisterPage(),
                               ),
                             ),
                           );

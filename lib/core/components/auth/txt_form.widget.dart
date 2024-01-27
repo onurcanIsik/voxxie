@@ -11,6 +11,7 @@ class TxtFormWidget extends StatefulWidget {
   final String hintTxt;
   final TextEditingController controller;
   final String? Function(String?)? validatorTxt;
+  final int? maxLeng;
   bool isVisible;
   bool isObscure;
 
@@ -22,6 +23,7 @@ class TxtFormWidget extends StatefulWidget {
     required this.validatorTxt,
     required this.isVisible,
     required this.isObscure,
+    this.maxLeng,
   });
 
   @override
@@ -35,6 +37,7 @@ class _TxtFormWidgetState extends State<TxtFormWidget> {
     return Padding(
       padding: EdgeInsets.only(left: 30, right: 30, top: widget.topPad),
       child: TextFormField(
+        maxLength: widget.maxLeng,
         style: TextStyle(color: isDarkTheme ? bgColor : txtColor),
         validator: widget.validatorTxt,
         controller: widget.controller,

@@ -17,6 +17,7 @@ abstract class  LocaleKeys {
   static const home_page_location_text = 'home_page.location_text';
   static const home_page_info_text = 'home_page.info_text';
   static const home_page_send_mail_text = 'home_page.send_mail_text';
+  static const home_page_send_text_message = 'home_page.send_text_message';
   static const home_page = 'home_page';
   static const add_vox_page_app_bar_text = 'add_vox_page.app_bar_text';
   static const add_vox_page_pet_name_text = 'add_vox_page.pet_name_text';
@@ -60,5 +61,7 @@ abstract class  LocaleKeys {
   static const handle_texts_handle_old_password_text = 'handle_texts.handle_old_password_text';
   static const handle_texts_handle_privacy_policy = 'handle_texts.handle_privacy_policy';
   static const handle_texts = 'handle_texts';
+  static const chats_page_texts_first_auto_message = 'chats_page_texts.first_auto_message';
+  static const chats_page_texts = 'chats_page_texts';
 
 }

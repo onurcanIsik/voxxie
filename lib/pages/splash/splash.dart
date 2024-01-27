@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, use_key_in_widget_constructors
 
 import 'dart:async';
-
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,7 +63,7 @@ class _SplashPageState extends State<SplashPage> {
       logoWidth: 100,
       durationInSeconds: 4,
       loadingText: Text(
-        'Version 1.0.0',
+        'Version 1.5.3',
         style: GoogleFonts.fredoka(
           color: isDarkTheme ? Colors.white : Colors.black,
         ),

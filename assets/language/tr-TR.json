@@ -16,7 +16,8 @@
         "pet_age_text": "Hayvan yası",
         "location_text": "Konum",
         "info_text": "Açıklama",
-        "send_mail_text": "Email gönder"
+        "send_mail_text": "Email gönder",
+        "send_text_message": "Mesaj gönder"
     },
     "add_vox_page": {
         "app_bar_text": "Voxx Ekle",
@@ -63,5 +64,8 @@
         "cannot_blank_text": "Bos olamaz",
         "handle_old_password_text": "Please validate your entered password",
         "handle_privacy_policy": "Gizlilik sözlesmesini onaylamanız gerekiyor"
+    },
+    "chats_page_texts": {
+        "first_auto_message": "Selam"
     }
 }

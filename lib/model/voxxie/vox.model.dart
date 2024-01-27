@@ -10,6 +10,7 @@ class VoxModel {
   String? voxID;
   String? userID;
   String? ownerMail;
+  String? ownerName;
 
   VoxModel({
     required this.voxName,
@@ -23,6 +24,7 @@ class VoxModel {
     this.voxID,
     this.userID,
     this.ownerMail,
+    this.ownerName,
   });
 
   factory VoxModel.fromMap(Map<String, dynamic> map) {
@@ -38,6 +40,7 @@ class VoxModel {
       voxID: map['voxID'] ?? '',
       userID: map['userID'] ?? '',
       ownerMail: map['ownerMail'] ?? '',
+      ownerName: map['ownerName'] ?? '',
     );
   }
 }

@@ -1,11 +1,18 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voxxie/colors/colors.dart';
+import 'package:voxxie/core/bloc/chats/chats.bloc.dart';
 import 'package:voxxie/core/components/auth/btn_widget.dart';
 import 'package:voxxie/core/util/extension/string.extension.dart';
 import 'package:voxxie/core/util/localization/locale_keys.g.dart';
+import 'package:voxxie/model/chats/chats.model.dart';
 import 'package:voxxie/pages/home/mail/send_mail.dart';
+import 'package:voxxie/pages/home/nav/navbar.dart';
 
 class VoxDetailPage extends StatefulWidget {
   final String petImage;
@@ -13,6 +20,7 @@ class VoxDetailPage extends StatefulWidget {
   final String petName;
   final String petGen;
   final String petOwnerMail;
+  final String? ownerID;
   const VoxDetailPage({
     super.key,
     required this.petImage,
@@ -20,6 +28,7 @@ class VoxDetailPage extends StatefulWidget {
     required this.petName,
     required this.petGen,
     required this.petOwnerMail,
+    required this.ownerID,
   });
 
   @override
@@ -29,6 +38,7 @@ class VoxDetailPage extends StatefulWidget {
 class _VoxDetailPageState extends State<VoxDetailPage> {
   @override
   Widget build(BuildContext context) {
+    final userID = FirebaseAuth.instance.currentUser!.uid;
     return Scaffold(
       backgroundColor: bgColor,
       appBar: _appBar(),
@@ -81,21 +91,52 @@ class _VoxDetailPageState extends State<VoxDetailPage> {
             ),
           ),
           const Spacer(),
-          BtnWidget(
-            topPdng: 0,
-            btnHeight: 70,
-            btnText: LocaleKeys.home_page_send_mail_text.locale,
-            btnWidth: 300,
-            btnFunc: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SendMailPage(
-                    ownerMail: widget.petOwnerMail,
-                  ),
-                ),
-              );
-            },
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              BtnWidget(
+                topPdng: 0,
+                btnHeight: 50,
+                btnText: LocaleKeys.home_page_send_mail_text.locale,
+                btnWidth: 150,
+                btnFunc: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SendMailPage(
+                        ownerMail: widget.petOwnerMail,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              BtnWidget(
+                topPdng: 0,
+                btnHeight: 50,
+                btnText: LocaleKeys.home_page_send_text_message.locale,
+                btnWidth: 170,
+                btnFunc: () async {
+                  await context.read<ChatsCubit>().setChats(
+                        ChatsModel(
+                          displayImage: widget.petImage,
+                          displayName: widget.petName,
+                          userID1: userID,
+                          userID2: widget.ownerID,
+                          message: LocaleKeys
+                              .chats_page_texts_first_auto_message.locale,
+                          senderID: userID,
+                        ),
+                        context,
+                      );
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const NavbarPage(),
+                    ),
+                    (route) => false,
+                  );
+                },
+              ),
+            ],
           ),
           const Spacer(),
         ],

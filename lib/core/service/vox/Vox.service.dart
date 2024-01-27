@@ -28,6 +28,7 @@ class VoxService implements IVoxService {
         'voxImage': model.voxImage,
         'voxDate': model.date,
         'ownerMail': FirebaseAuth.instance.currentUser!.email,
+        'ownerName': model.ownerName,
       });
       return right(unit);
     } catch (err) {

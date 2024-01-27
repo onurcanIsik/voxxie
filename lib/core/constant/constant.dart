@@ -7,6 +7,6 @@ class ApplicationConstants {
   const ApplicationConstants._();
 
   static const LANG_ASSET_PATH = 'assets/language';
-  static const POLICY_TR_PATH = 'assets/pdf/policy-TR.pdf';
-  static const POLICY_EN_PATH = 'assets/pdf/policy-EN.pdf';
+  static const POLICY_TR_PATH = 'assets/pdf/policyTR.pdf';
+  static const POLICY_EN_PATH = 'assets/pdf/policyEN.pdf';
 }

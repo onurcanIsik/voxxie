@@ -7,6 +7,7 @@ import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/extensions/context.extension.dart';
 import 'package:voxxie/core/text/locale_text.dart';
+import 'package:voxxie/core/util/extension/string.extension.dart';
 import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 
 class VoxCard extends StatefulWidget {
@@ -33,7 +34,6 @@ class _VoxCardState extends State<VoxCard> {
     return Padding(
       padding: context.paddingAllLow * 1.5,
       child: Container(
-        height: context.dynamicHeight(0.5),
         decoration: BoxDecoration(
           color: isDarkTheme ? postBgColor : txtColor,
           borderRadius: BorderRadius.circular(12),
@@ -65,7 +65,7 @@ class _VoxCardState extends State<VoxCard> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 LocaleText(
-                  text: LocaleKeys.home_page_missing_text,
+                  text: LocaleKeys.home_page_missing_text.locale,
                   txtStyle: GoogleFonts.fredoka(
                     fontSize: 20,
                     color: Colors.red,
@@ -79,7 +79,7 @@ class _VoxCardState extends State<VoxCard> {
               child: Row(
                 children: [
                   LocaleText(
-                    text: LocaleKeys.home_page_pet_name_text,
+                    text: LocaleKeys.home_page_pet_name_text.locale,
                     txtStyle: GoogleFonts.fredoka(
                       fontSize: 18,
                       color: isDarkTheme ? bgColor : bgColor,
@@ -93,9 +93,8 @@ class _VoxCardState extends State<VoxCard> {
                       color: isDarkTheme ? bgColor : bgColor,
                     ),
                   ),
-                  const SizedBox(width: 50),
                   LocaleText(
-                    text: LocaleKeys.home_page_location_text,
+                    text: "  ${LocaleKeys.home_page_location_text.locale}",
                     txtStyle: GoogleFonts.fredoka(
                       fontSize: 18,
                       color: isDarkTheme ? bgColor : bgColor,
@@ -122,6 +121,7 @@ class _VoxCardState extends State<VoxCard> {
             ),
             SizedBox(
               width: context.dynamicWidth(0.85),
+              height: context.dynamicHeight(0.2),
               child: AutoSizeText(
                 widget.voxInfo,
                 maxLines: 2,

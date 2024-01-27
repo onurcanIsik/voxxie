@@ -87,6 +87,7 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
                 ),
               ),
               TxtFormWidget(
+                maxLeng: 10,
                 topPad: 30,
                 hintTxt: LocaleKeys.add_vox_page_pet_name_text.locale,
                 controller: voxName,

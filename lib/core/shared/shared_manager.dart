@@ -10,7 +10,6 @@ class SharedManager {
       _prefs = await SharedPreferences.getInstance();
     } catch (e) {
       // Handle initialization error, e.g., log it or display a message.
-      print('SharedPreferences initialization failed: $e');
     }
   }
 

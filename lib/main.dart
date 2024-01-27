@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:voxxie/core/bloc/chats/chats.bloc.dart';
 import 'package:voxxie/core/bloc/profile/profile.bloc.dart';
 import 'package:voxxie/core/bloc/settings/set.bloc.dart';
 import 'package:voxxie/core/bloc/settings/settings_state.dart';
@@ -81,6 +82,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => SettingsCubit(),
+          ),
+          BlocProvider(
+            create: (context) => ChatsCubit(),
           ),
         ],
         child: BlocBuilder<ThemeCubit, SettinState>(

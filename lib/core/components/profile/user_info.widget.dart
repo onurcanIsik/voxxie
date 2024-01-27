@@ -141,13 +141,22 @@ class _UserInfoWidgetState extends State<UserInfoWidget> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(
-                            widget.userName,
-                            style: GoogleFonts.fredoka(
-                              fontSize: 18,
-                              color: bgColor,
+                          if (widget.userName.isNotEmpty)
+                            Text(
+                              widget.userName,
+                              style: GoogleFonts.fredoka(
+                                fontSize: 18,
+                                color: bgColor,
+                              ),
                             ),
-                          ),
+                          if (widget.userName.isEmpty)
+                            Text(
+                              "error",
+                              style: GoogleFonts.fredoka(
+                                fontSize: 18,
+                                color: bgColor,
+                              ),
+                            ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [

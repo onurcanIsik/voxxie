@@ -16,7 +16,8 @@
         "pet_age_text": "Pet age",
         "location_text": "Location",
         "info_text": "Info",
-        "send_mail_text": "Send to mail"
+        "send_mail_text": "Send to mail",
+        "send_text_message": "Send a message"
     },
     "add_vox_page": {
         "app_bar_text": "Add Voxx",
@@ -63,5 +64,8 @@
         "cannot_blank_text": "Cannot be blank",
         "handle_old_password_text": "Please verify the password you entered",
         "handle_privacy_policy": "You need to approve the privacy agreement"
+    },
+    "chats_page_texts": {
+        "first_auto_message": "Hi"
     }
 }

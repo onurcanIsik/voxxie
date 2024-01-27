@@ -18,8 +18,10 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String? userName = SharedManager.getString(SharedKeys.userName);
-    final String? userImage = SharedManager.getString(SharedKeys.userImage);
+    final String userName =
+        SharedManager.getString(SharedKeys.userName).toString();
+    final String userImage =
+        SharedManager.getString(SharedKeys.userImage).toString();
 
     return MultiBlocProvider(
       providers: [
@@ -34,7 +36,7 @@ class ProfilePage extends StatelessWidget {
             if (state is IVoxxieLoadedState) {
               final ivox = state.ivox;
               return UserInfoWidget(
-                userName: userName ?? "error",
+                userName: userName,
                 userImage: userImage,
                 userPostCount: ivox.length.toString(),
               );
