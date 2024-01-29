@@ -66,6 +66,20 @@
         "handle_privacy_policy": "You need to approve the privacy agreement"
     },
     "chats_page_texts": {
-        "first_auto_message": "Hi"
+        "first_auto_message": "Hi",
+        "alert_text": "Please do not share your personal information with anyone."
+    },
+    "reminder_page_texts": {
+        "appbar_text": "Reminder",
+        "pet_dialog_text": "Please tap on your pet to add information!",
+        "pet_dialog_2_text": "Please add a pet first!",
+        "pet_name_text": "Pet Name",
+        "pet_drug_name_text": "Drug Name",
+        "pet_add_date_text": "Add Date",
+        "pet_save_Data_text": "Save"
+    },
+    "user_serach_texts": {
+        "appbar_text": "User Search",
+        "text_field_texts": "Search by Username"
     }
 }

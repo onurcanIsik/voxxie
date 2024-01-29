@@ -115,6 +115,7 @@ class AuthServices implements IAuthService {
         'userMail': email,
         'userName': userName,
         'userID': userID,
+        'userImage': '',
       });
       return right(unit);
     } catch (err) {

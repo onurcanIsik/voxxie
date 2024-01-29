@@ -62,6 +62,18 @@ abstract class  LocaleKeys {
   static const handle_texts_handle_privacy_policy = 'handle_texts.handle_privacy_policy';
   static const handle_texts = 'handle_texts';
   static const chats_page_texts_first_auto_message = 'chats_page_texts.first_auto_message';
+  static const chats_page_texts_alert_text = 'chats_page_texts.alert_text';
   static const chats_page_texts = 'chats_page_texts';
+  static const reminder_page_texts_appbar_text = 'reminder_page_texts.appbar_text';
+  static const reminder_page_texts_pet_dialog_text = 'reminder_page_texts.pet_dialog_text';
+  static const reminder_page_texts_pet_dialog_2_text = 'reminder_page_texts.pet_dialog_2_text';
+  static const reminder_page_texts_pet_name_text = 'reminder_page_texts.pet_name_text';
+  static const reminder_page_texts_pet_drug_name_text = 'reminder_page_texts.pet_drug_name_text';
+  static const reminder_page_texts_pet_add_date_text = 'reminder_page_texts.pet_add_date_text';
+  static const reminder_page_texts_pet_save_Data_text = 'reminder_page_texts.pet_save_Data_text';
+  static const reminder_page_texts = 'reminder_page_texts';
+  static const user_serach_texts_appbar_text = 'user_serach_texts.appbar_text';
+  static const user_serach_texts_text_field_texts = 'user_serach_texts.text_field_texts';
+  static const user_serach_texts = 'user_serach_texts';
 
 }

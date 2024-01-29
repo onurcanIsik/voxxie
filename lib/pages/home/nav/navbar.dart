@@ -10,6 +10,7 @@ import 'package:voxxie/core/bloc/vox/vox.bloc.dart';
 import 'package:voxxie/pages/home/homepage.dart';
 import 'package:voxxie/pages/home/profile/profile.dart';
 import 'package:voxxie/pages/home/vox/add_vox.dart';
+import 'package:voxxie/pages/reminder/reminder.dart';
 
 class NavbarPage extends StatefulWidget {
   const NavbarPage({super.key});
@@ -47,6 +48,7 @@ class _NavbarPageState extends State<NavbarPage> {
       ],
       child: const AddVoxxiePage(),
     ),
+    const ReminderPage(),
     MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -81,6 +83,9 @@ class _NavbarPageState extends State<NavbarPage> {
             ),
             DotNavigationBarItem(
               icon: const Icon(Icons.add),
+            ),
+            DotNavigationBarItem(
+              icon: const Icon(Icons.calendar_month_outlined),
             ),
             DotNavigationBarItem(
               icon: const Icon(Icons.person),

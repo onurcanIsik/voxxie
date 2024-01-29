@@ -16,6 +16,7 @@ import 'package:voxxie/core/components/home/voxCard.widget.dart';
 import 'package:voxxie/core/service/manager/authManager.dart';
 import 'package:voxxie/pages/auth/login.dart';
 import 'package:voxxie/pages/chat/my_chat_page.dart';
+import 'package:voxxie/pages/home/search/search_page.dart';
 import 'package:voxxie/pages/home/vox/vox_detail.dart';
 
 class HomePage extends StatefulWidget {
@@ -171,6 +172,17 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SearchPage(),
+              ),
+            );
+          },
+          icon: const Icon(Icons.search),
+        ),
         IconButton(
           onPressed: () {
             Navigator.push(

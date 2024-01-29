@@ -5,8 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:voxxie/core/service/auth/auth.service.dart';
 import 'package:voxxie/core/service/manager/authManager.dart';
+import 'package:voxxie/core/shared/shared_manager.dart';
+import 'package:voxxie/core/util/enums/shared_keys.dart';
 import 'package:voxxie/core/util/extension/string.extension.dart';
 import 'package:voxxie/core/util/localization/locale_keys.g.dart';
+import 'package:voxxie/main.dart';
 import 'package:voxxie/pages/auth/login.dart';
 import 'package:voxxie/pages/home/nav/navbar.dart';
 
@@ -23,6 +26,7 @@ class AuthCubit extends Cubit<AuthState> {
     BuildContext context,
   ) async {
     try {
+      final checkUserName = SharedManager.getString(SharedKeys.userName);
       final service = await _authServices.loginUser(
         email,
         password,
@@ -30,6 +34,21 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
       if (service.isRight()) {
+        if (checkUserName!.isEmpty) {
+          Navigator.of(context)
+              .pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const MyApp(),
+                ),
+                (route) => false,
+              )
+              .then(
+                (value) => QuickAlert.show(
+                  context: context,
+                  type: QuickAlertType.success,
+                ),
+              );
+        }
         return Navigator.of(context)
             .pushAndRemoveUntil(
               MaterialPageRoute(

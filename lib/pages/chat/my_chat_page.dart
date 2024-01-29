@@ -1,8 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quickalert/quickalert.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:voxxie/colors/colors.dart';
+import 'package:voxxie/core/util/extension/string.extension.dart';
+import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 import 'package:voxxie/pages/chat/converstation_page.dart';
 
 class MyChatPhage extends StatefulWidget {
@@ -42,7 +48,12 @@ class _MyChatPhageState extends State<MyChatPhage> {
             children: data!.docs
                 .map(
                   (doc) => GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      await QuickAlert.show(
+                        context: context,
+                        type: QuickAlertType.info,
+                        text: LocaleKeys.chats_page_texts_alert_text.locale,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(

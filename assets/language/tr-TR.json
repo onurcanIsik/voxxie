@@ -66,6 +66,20 @@
         "handle_privacy_policy": "Gizlilik sözlesmesini onaylamanız gerekiyor"
     },
     "chats_page_texts": {
-        "first_auto_message": "Selam"
+        "first_auto_message": "Selam",
+        "alert_text": "Lütfen kişisel bilgilerinizi kimseye vermeyin"
+    },
+    "reminder_page_texts": {
+        "appbar_text": "Hatırlatıcı",
+        "pet_dialog_text": "Lütfen evcil hayvanınızın üstüne basıp bilgi ekleyin!",
+        "pet_dialog_2_text": "Lütfen önce evcil hayvan ekleyin!",
+        "pet_name_text": "Hayvan Adı",
+        "pet_drug_name_text": "İlaç Adı",
+        "pet_add_date_text": "Tarih Ekle",
+        "pet_save_Data_text": "Kaydet"
+    },
+    "user_serach_texts": {
+        "appbar_text": "Kullanıcı Ara",
+        "text_field_texts": "Kulanıcı Adı Girin"
     }
 }

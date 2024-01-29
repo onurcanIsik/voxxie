@@ -3,4 +3,9 @@ enum SharedKeys {
   userName,
   userImage,
   userMail,
+  petImage,
+  petDrugName,
+  petDrugDate,
+  petName,
+  petImagePaths,
 }

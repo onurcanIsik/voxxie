@@ -63,7 +63,7 @@ class _SplashPageState extends State<SplashPage> {
       logoWidth: 100,
       durationInSeconds: 4,
       loadingText: Text(
-        'Version 1.5.3',
+        'Version 1.7.6',
         style: GoogleFonts.fredoka(
           color: isDarkTheme ? Colors.white : Colors.black,
         ),
