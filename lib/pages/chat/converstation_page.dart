@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:voxxie/colors/colors.dart';
+import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/components/chats/chats_bubble.dart';
 import 'package:voxxie/core/extensions/context.extension.dart';
 import 'package:voxxie/core/util/extension/string.extension.dart';
@@ -146,9 +149,10 @@ class _ConverstationPageState extends State<ConverstationPage> {
   }
 
   AppBar _appBar() {
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return AppBar(
       centerTitle: true,
-      backgroundColor: Colors.green,
+      backgroundColor: isDarkTheme ? darkAppbarColorColor : lightAppbarColor,
       title: Text(widget.userName),
     );
   }

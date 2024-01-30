@@ -5,6 +5,7 @@ import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/bloc/image/image.bloc.dart';
 import 'package:voxxie/core/bloc/ivox/ivox.bloc.dart';
 import 'package:voxxie/core/bloc/settings/set.bloc.dart';
+import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/bloc/shared/set_user.bloc.dart';
 import 'package:voxxie/core/components/profile/user_info.widget.dart';
 import 'package:voxxie/core/util/enums/shared_keys.dart';
@@ -49,10 +50,12 @@ class ProfilePage extends StatelessWidget {
   }
 
   AppBar _appBar(BuildContext context) {
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return AppBar(
       centerTitle: true,
+      elevation: 10,
       iconTheme: const IconThemeData(color: Colors.white),
-      backgroundColor: btnColor,
+      backgroundColor: isDarkTheme ? darkAppbarColorColor : lightAppbarColor,
       title: Text(
         LocaleKeys.profile_page_profile_appbar_text.locale,
         style: GoogleFonts.fredoka(

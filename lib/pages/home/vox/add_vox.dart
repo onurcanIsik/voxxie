@@ -217,7 +217,7 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
                   }
                 },
               ),
-              const SizedBox(height: 250)
+              const SizedBox(height: 100)
             ],
           ),
         ),
@@ -226,10 +226,12 @@ class _AddVoxxiePageState extends State<AddVoxxiePage> {
   }
 
   AppBar _appBar() {
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return AppBar(
       centerTitle: true,
+      elevation: 10,
       iconTheme: const IconThemeData(color: Colors.white),
-      backgroundColor: btnColor,
+      backgroundColor: isDarkTheme ? darkAppbarColorColor : lightAppbarColor,
       title: Text(
         LocaleKeys.add_vox_page_app_bar_text.locale,
         style: GoogleFonts.fredoka(

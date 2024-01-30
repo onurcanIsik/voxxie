@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously, no_leading_underscores_for_local_identifiers
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +20,7 @@ import 'package:voxxie/core/util/extension/string.extension.dart';
 import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 import 'package:voxxie/main.dart';
 import 'package:voxxie/pages/auth/login.dart';
+import 'package:voxxie/pages/settings/delete_account.dart';
 import 'package:voxxie/pages/settings/email_verification.dart';
 import 'package:voxxie/pages/settings/password.dart';
 
@@ -201,20 +201,15 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 trailing: IconButton(
                   icon: const Icon(
-                    Icons.close,
+                    Icons.arrow_forward_ios_rounded,
                     color: Colors.red,
                   ),
                   onPressed: () async {
-                    await deleteUserAccount(context);
-                    await AuthManager().setLoggedIn(false);
-                    Navigator.of(context).pushAndRemoveUntil(
+                    Navigator.push(
+                      context,
                       MaterialPageRoute(
-                        builder: (context) => BlocProvider(
-                          create: (context) => AuthCubit(),
-                          child: LoginPage(),
-                        ),
+                        builder: (context) => const DeleteAccountPage(),
                       ),
-                      (route) => false,
                     );
                   },
                 ),
@@ -240,10 +235,11 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   AppBar _appBar() {
+    final bool isDarkThemeC = context.watch<ThemeCubit>().state.isDarkTheme!;
     return AppBar(
       centerTitle: true,
       iconTheme: const IconThemeData(color: Colors.white),
-      backgroundColor: btnColor,
+      backgroundColor: isDarkThemeC ? darkAppbarColorColor : lightAppbarColor,
       title: Text(
         LocaleKeys.settings_page_settings_appbar_text.locale,
         style: GoogleFonts.fredoka(
@@ -316,44 +312,6 @@ class _SettingsPageState extends State<SettingsPage> {
         );
       },
     );
-  }
-
-  Future<void> deleteUserAccount(BuildContext context) async {
-    final userID = FirebaseAuth.instance.currentUser!.uid;
-
-    try {
-      await FirebaseFirestore.instance.collection('Users').doc(userID).delete();
-      await FirebaseAuth.instance.currentUser!.delete();
-      await AuthManager().setLoggedIn(false);
-      return QuickAlert.show(context: context, type: QuickAlertType.success);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == "requires-recent-login") {
-        await _reauthenticateAndDelete(context);
-      } else {
-        return QuickAlert.show(type: QuickAlertType.warning, context: context);
-      }
-    } catch (e) {
-      return QuickAlert.show(type: QuickAlertType.error, context: context);
-    }
-  }
-
-  Future<void> _reauthenticateAndDelete(BuildContext context) async {
-    final firebaseAuth = FirebaseAuth.instance;
-    try {
-      final providerData = firebaseAuth.currentUser?.providerData.first;
-
-      if (AppleAuthProvider().providerId == providerData!.providerId) {
-        await firebaseAuth.currentUser!
-            .reauthenticateWithProvider(AppleAuthProvider());
-      } else if (GoogleAuthProvider().providerId == providerData.providerId) {
-        await firebaseAuth.currentUser!
-            .reauthenticateWithProvider(GoogleAuthProvider());
-      }
-
-      await firebaseAuth.currentUser?.delete();
-    } catch (e) {
-      return QuickAlert.show(type: QuickAlertType.warning, context: context);
-    }
   }
 
   Future logout(BuildContext context) async {

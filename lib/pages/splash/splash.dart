@@ -57,13 +57,13 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return EasySplashScreen(
-      backgroundColor: isDarkTheme ? txtColor : bgColor,
+      backgroundColor: isDarkTheme ? darkBgColor : lightBgColor,
       logo: Image.asset('assets/images/voxxie_logo.png'),
       loaderColor: btnColor,
       logoWidth: 100,
       durationInSeconds: 4,
       loadingText: Text(
-        'Version 1.7.6',
+        'Version 1.7.9',
         style: GoogleFonts.fredoka(
           color: isDarkTheme ? Colors.white : Colors.black,
         ),

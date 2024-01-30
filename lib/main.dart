@@ -6,10 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voxxie/core/bloc/chats/chats.bloc.dart';
 import 'package:voxxie/core/bloc/profile/profile.bloc.dart';
+import 'package:voxxie/core/bloc/reminder/reminder.bloc.dart';
 import 'package:voxxie/core/bloc/settings/set.bloc.dart';
 import 'package:voxxie/core/bloc/settings/settings_state.dart';
 import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/bloc/shared/set_user.bloc.dart';
+import 'package:voxxie/core/bloc/vox/vox.bloc.dart';
 import 'package:voxxie/core/constant/constant.dart';
 import 'package:voxxie/core/shared/shared_manager.dart';
 import 'package:voxxie/core/theme/dark.theme.dart';
@@ -85,6 +87,12 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => ChatsCubit(),
+          ),
+          BlocProvider(
+            create: (context) => ReminderCubit()..getData(context),
+          ),
+          BlocProvider(
+            create: (context) => VoxxieCubit(),
           ),
         ],
         child: BlocBuilder<ThemeCubit, SettinState>(

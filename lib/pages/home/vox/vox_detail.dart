@@ -5,13 +5,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/bloc/chats/chats.bloc.dart';
+import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/components/auth/btn_widget.dart';
+import 'package:voxxie/core/extensions/context.extension.dart';
+import 'package:voxxie/core/service/manager/authManager.dart';
 import 'package:voxxie/core/util/extension/string.extension.dart';
 import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 import 'package:voxxie/model/chats/chats.model.dart';
-import 'package:voxxie/pages/home/mail/send_mail.dart';
 import 'package:voxxie/pages/home/nav/navbar.dart';
 
 class VoxDetailPage extends StatefulWidget {
@@ -39,8 +42,9 @@ class _VoxDetailPageState extends State<VoxDetailPage> {
   @override
   Widget build(BuildContext context) {
     final userID = FirebaseAuth.instance.currentUser!.uid;
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
+    final AuthManager authManager = AuthManager();
     return Scaffold(
-      backgroundColor: bgColor,
       appBar: _appBar(),
       body: Column(
         children: [
@@ -64,7 +68,7 @@ class _VoxDetailPageState extends State<VoxDetailPage> {
             style: GoogleFonts.fredoka(
               fontSize: 21,
               fontWeight: FontWeight.w500,
-              color: txtColor,
+              color: isDarkTheme ? Colors.white : txtColor,
             ),
           ),
           Text(
@@ -72,7 +76,7 @@ class _VoxDetailPageState extends State<VoxDetailPage> {
             style: GoogleFonts.fredoka(
               fontSize: 21,
               fontWeight: FontWeight.w500,
-              color: txtColor,
+              color: isDarkTheme ? Colors.white : txtColor,
             ),
           ),
           Padding(
@@ -84,7 +88,7 @@ class _VoxDetailPageState extends State<VoxDetailPage> {
                   style: GoogleFonts.fredoka(
                     fontSize: 21,
                     fontWeight: FontWeight.w500,
-                    color: txtColor,
+                    color: isDarkTheme ? Colors.white : txtColor,
                   ),
                 )
               ],
@@ -97,43 +101,37 @@ class _VoxDetailPageState extends State<VoxDetailPage> {
               BtnWidget(
                 topPdng: 0,
                 btnHeight: 50,
-                btnText: LocaleKeys.home_page_send_mail_text.locale,
-                btnWidth: 150,
-                btnFunc: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SendMailPage(
-                        ownerMail: widget.petOwnerMail,
-                      ),
-                    ),
-                  );
-                },
-              ),
-              BtnWidget(
-                topPdng: 0,
-                btnHeight: 50,
                 btnText: LocaleKeys.home_page_send_text_message.locale,
-                btnWidth: 170,
+                btnWidth: context.dynamicWidth(0.7),
                 btnFunc: () async {
-                  await context.read<ChatsCubit>().setChats(
-                        ChatsModel(
-                          displayImage: widget.petImage,
-                          displayName: widget.petName,
-                          userID1: userID,
-                          userID2: widget.ownerID,
-                          message: LocaleKeys
-                              .chats_page_texts_first_auto_message.locale,
-                          senderID: userID,
-                        ),
-                        context,
-                      );
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => const NavbarPage(),
-                    ),
-                    (route) => false,
-                  );
+                  if (authManager.isVerified == true) {
+                    await context.read<ChatsCubit>().setChats(
+                          ChatsModel(
+                            displayImage: widget.petImage,
+                            displayName: widget.petName,
+                            userID1: userID,
+                            userID2: widget.ownerID,
+                            message: LocaleKeys
+                                .chats_page_texts_first_auto_message.locale,
+                            senderID: userID,
+                          ),
+                          context,
+                        );
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => const NavbarPage(),
+                      ),
+                      (route) => false,
+                    );
+                  } else {
+                    return QuickAlert.show(
+                      context: context,
+                      type: QuickAlertType.warning,
+                      text: LocaleKeys
+                          .settings_page_settings_email_verification_text
+                          .locale,
+                    );
+                  }
                 },
               ),
             ],
@@ -145,9 +143,10 @@ class _VoxDetailPageState extends State<VoxDetailPage> {
   }
 
   AppBar _appBar() {
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return AppBar(
       centerTitle: true,
-      backgroundColor: Colors.redAccent,
+      backgroundColor: isDarkTheme ? darkAppbarColorColor : lightAppbarColor,
       iconTheme: const IconThemeData(color: Colors.white),
       title: Text(
         LocaleKeys.home_page_missing_text.locale,

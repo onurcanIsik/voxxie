@@ -8,7 +8,7 @@ class DarkTheme {
   const DarkTheme._();
 
   static final ThemeData darkTheme = ThemeData.dark().copyWith(
-    scaffoldBackgroundColor: txtColor,
+    scaffoldBackgroundColor: darkBgColor,
     appBarTheme: AppBarTheme(
       systemOverlayStyle: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,

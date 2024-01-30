@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voxxie/colors/colors.dart';
+import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 
 class BtnWidget extends StatefulWidget {
   final double topPdng;
@@ -24,6 +26,7 @@ class BtnWidget extends StatefulWidget {
 class _BtnWidgetState extends State<BtnWidget> {
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return Padding(
       padding: EdgeInsets.only(top: widget.topPdng),
       child: SizedBox(
@@ -34,7 +37,8 @@ class _BtnWidgetState extends State<BtnWidget> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
-            backgroundColor: btnColor,
+            backgroundColor:
+                isDarkTheme ? darkButtonPostColor : lightButtonPostColor,
           ),
           onPressed: () {
             widget.btnFunc();

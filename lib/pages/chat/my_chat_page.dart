@@ -1,12 +1,14 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, unnecessary_import
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:voxxie/colors/colors.dart';
+import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/util/extension/string.extension.dart';
 import 'package:voxxie/core/util/localization/locale_keys.g.dart';
 import 'package:voxxie/pages/chat/converstation_page.dart';
@@ -27,6 +29,7 @@ class _MyChatPhageState extends State<MyChatPhage> {
   @override
   Widget build(BuildContext context) {
     final userID = FirebaseAuth.instance.currentUser!.uid;
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return Scaffold(
       appBar: _appBar(),
       body: StreamBuilder(
@@ -66,7 +69,9 @@ class _MyChatPhageState extends State<MyChatPhage> {
                       );
                     },
                     child: Card(
-                      color: postBgColor,
+                      color: isDarkTheme
+                          ? darkButtonPostColor
+                          : lightButtonPostColor,
                       child: ListTile(
                         leading: CircleAvatar(
                           backgroundImage: NetworkImage(
@@ -92,9 +97,10 @@ class _MyChatPhageState extends State<MyChatPhage> {
   }
 
   AppBar _appBar() {
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return AppBar(
       centerTitle: true,
-      backgroundColor: logoColor,
+      backgroundColor: isDarkTheme ? darkAppbarColorColor : lightAppbarColor,
       title: Text(
         'My chats',
         style: GoogleFonts.fredoka(),

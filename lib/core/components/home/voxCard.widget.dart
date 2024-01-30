@@ -35,7 +35,7 @@ class _VoxCardState extends State<VoxCard> {
       padding: context.paddingAllLow * 1.5,
       child: Container(
         decoration: BoxDecoration(
-          color: isDarkTheme ? postBgColor : txtColor,
+          color: isDarkTheme ? darkPostColor : lightPostColor,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -82,7 +82,7 @@ class _VoxCardState extends State<VoxCard> {
                     text: LocaleKeys.home_page_pet_name_text.locale,
                     txtStyle: GoogleFonts.fredoka(
                       fontSize: 18,
-                      color: isDarkTheme ? bgColor : bgColor,
+                      color: isDarkTheme ? bgColor : txtColor,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -90,14 +90,14 @@ class _VoxCardState extends State<VoxCard> {
                     ": ${widget.voxName}",
                     style: GoogleFonts.fredoka(
                       fontSize: 18,
-                      color: isDarkTheme ? bgColor : bgColor,
+                      color: isDarkTheme ? bgColor : txtColor,
                     ),
                   ),
                   LocaleText(
                     text: "  ${LocaleKeys.home_page_location_text.locale}",
                     txtStyle: GoogleFonts.fredoka(
                       fontSize: 18,
-                      color: isDarkTheme ? bgColor : bgColor,
+                      color: isDarkTheme ? bgColor : txtColor,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -105,7 +105,7 @@ class _VoxCardState extends State<VoxCard> {
                     ": ${widget.voxLoc}",
                     style: GoogleFonts.fredoka(
                       fontSize: 18,
-                      color: isDarkTheme ? bgColor : bgColor,
+                      color: isDarkTheme ? bgColor : txtColor,
                     ),
                   )
                 ],
@@ -115,7 +115,7 @@ class _VoxCardState extends State<VoxCard> {
               text: LocaleKeys.home_page_info_text,
               txtStyle: GoogleFonts.fredoka(
                 fontSize: 18,
-                color: isDarkTheme ? bgColor : bgColor,
+                color: isDarkTheme ? bgColor : txtColor,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -128,7 +128,7 @@ class _VoxCardState extends State<VoxCard> {
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.fredoka(
                   fontSize: 18,
-                  color: isDarkTheme ? bgColor : bgColor,
+                  color: isDarkTheme ? bgColor : txtColor,
                 ),
               ),
             ),

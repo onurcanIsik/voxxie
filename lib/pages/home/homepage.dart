@@ -11,12 +11,12 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:voxxie/colors/colors.dart';
 import 'package:voxxie/core/bloc/auth/auth.bloc.dart';
 import 'package:voxxie/core/bloc/profile/profile.bloc.dart';
+import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/bloc/vox/vox.bloc.dart';
 import 'package:voxxie/core/components/home/voxCard.widget.dart';
 import 'package:voxxie/core/service/manager/authManager.dart';
 import 'package:voxxie/pages/auth/login.dart';
 import 'package:voxxie/pages/chat/my_chat_page.dart';
-import 'package:voxxie/pages/home/search/search_page.dart';
 import 'package:voxxie/pages/home/vox/vox_detail.dart';
 
 class HomePage extends StatefulWidget {
@@ -159,9 +159,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   AppBar _appBar(BuildContext context) {
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return AppBar(
+      elevation: 10,
       iconTheme: const IconThemeData(color: Colors.white),
-      backgroundColor: btnColor,
+      backgroundColor: isDarkTheme ? darkAppbarColorColor : lightAppbarColor,
       centerTitle: true,
       title: Text(
         'voxxie',
@@ -172,17 +174,6 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SearchPage(),
-              ),
-            );
-          },
-          icon: const Icon(Icons.search),
-        ),
         IconButton(
           onPressed: () {
             Navigator.push(

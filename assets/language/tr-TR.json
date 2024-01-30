@@ -60,9 +60,9 @@
         "post_shared_text": "Başarıyla paylaşıldı",
         "post_updated_text": "Başarıyla güncellendi",
         "email_cannot_empty_text": "Email bos olamaz",
-        "username_cannot_empty_text": "Username bos olamaz",
+        "username_cannot_empty_text": "Kullanıcı adı bos olamaz",
         "cannot_blank_text": "Bos olamaz",
-        "handle_old_password_text": "Please validate your entered password",
+        "handle_old_password_text": "Şifreler aynı olmalı",
         "handle_privacy_policy": "Gizlilik sözlesmesini onaylamanız gerekiyor"
     },
     "chats_page_texts": {

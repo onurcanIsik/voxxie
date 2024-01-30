@@ -1,4 +1,3 @@
-import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voxxie/colors/colors.dart';
@@ -9,11 +8,12 @@ import 'package:voxxie/core/bloc/shared/set_user.bloc.dart';
 import 'package:voxxie/core/bloc/vox/vox.bloc.dart';
 import 'package:voxxie/pages/home/homepage.dart';
 import 'package:voxxie/pages/home/profile/profile.dart';
+import 'package:voxxie/pages/home/search/search_page.dart';
 import 'package:voxxie/pages/home/vox/add_vox.dart';
 import 'package:voxxie/pages/reminder/reminder.dart';
 
 class NavbarPage extends StatefulWidget {
-  const NavbarPage({super.key});
+  const NavbarPage({Key? key}) : super(key: key);
 
   @override
   State<NavbarPage> createState() => _NavbarPageState();
@@ -40,6 +40,7 @@ class _NavbarPageState extends State<NavbarPage> {
       ],
       child: const HomePage(),
     ),
+    const SearchPage(),
     MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -64,35 +65,63 @@ class _NavbarPageState extends State<NavbarPage> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDarkThemeC = context.watch<ThemeCubit>().state.isDarkTheme!;
+    final themeCubit = context.watch<ThemeCubit>();
+    final isDarkThemeC = themeCubit.state.isDarkTheme ?? false;
+
     return Scaffold(
-      extendBody: true,
       body: pages[selectedIndex],
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 70),
-        child: DotNavigationBar(
-          borderRadius: 12,
-          marginR: const EdgeInsets.symmetric(horizontal: 60, vertical: 0),
-          backgroundColor: isDarkThemeC ? bgColor : postBgColor,
-          unselectedItemColor: isDarkThemeC ? Colors.grey : bgColor,
-          onTap: changePage,
-          currentIndex: selectedIndex,
-          items: [
-            DotNavigationBarItem(
-              icon: const Icon(Icons.house_rounded),
-            ),
-            DotNavigationBarItem(
-              icon: const Icon(Icons.add),
-            ),
-            DotNavigationBarItem(
-              icon: const Icon(Icons.calendar_month_outlined),
-            ),
-            DotNavigationBarItem(
-              icon: const Icon(Icons.person),
-            ),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: _navBarsItems(),
+        elevation: 10,
+        currentIndex: selectedIndex,
+        backgroundColor: isDarkThemeC ? darkOrangeColor : lightOrangeColor,
+        showSelectedLabels: false,
+        unselectedItemColor: Colors.grey,
+        selectedItemColor: Colors.white,
+        onTap: (index) {
+          setState(() {
+            selectedIndex = index;
+          });
+        },
       ),
     );
+  }
+
+  List<BottomNavigationBarItem> _navBarsItems() {
+    final themeCubit = context.watch<ThemeCubit>();
+    final isDarkThemeC = themeCubit.state.isDarkTheme ?? false;
+
+    return [
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.home),
+        label: '',
+        backgroundColor:
+            isDarkThemeC ? darkBottomBarColor : lightBottomBarColor,
+      ),
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.search),
+        label: '',
+        backgroundColor:
+            isDarkThemeC ? darkBottomBarColor : lightBottomBarColor,
+      ),
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.add),
+        label: '',
+        backgroundColor:
+            isDarkThemeC ? darkBottomBarColor : lightBottomBarColor,
+      ),
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.calendar_month_outlined),
+        label: '',
+        backgroundColor:
+            isDarkThemeC ? darkBottomBarColor : lightBottomBarColor,
+      ),
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.person),
+        label: '',
+        backgroundColor:
+            isDarkThemeC ? darkBottomBarColor : lightBottomBarColor,
+      )
+    ];
   }
 }

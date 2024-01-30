@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:voxxie/colors/colors.dart';
+import 'package:voxxie/core/bloc/settings/theme.bloc.dart';
 import 'package:voxxie/core/extensions/context.extension.dart';
 
 class ChatsBubbleWidget extends StatefulWidget {
@@ -27,12 +29,13 @@ class ChatsBubbleWidget extends StatefulWidget {
 class _ChatsBubbleWidgetState extends State<ChatsBubbleWidget> {
   @override
   Widget build(BuildContext context) {
+    final bool isDarkTheme = context.watch<ThemeCubit>().state.isDarkTheme!;
     return Padding(
       padding: context.paddingAllLow * 0.5,
       child: Container(
         height: 50,
         decoration: BoxDecoration(
-          color: postBgColor,
+          color: isDarkTheme ? darkButtonPostColor : lightButtonPostColor,
           borderRadius: BorderRadius.only(
             bottomRight: widget.bottomRight ?? const Radius.circular(0),
             bottomLeft: widget.bottomLeft ?? const Radius.circular(0),
